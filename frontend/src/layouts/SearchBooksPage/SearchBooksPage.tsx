@@ -44,7 +44,7 @@ export const SearchBooksPage = () => {
                     description: responseData[key].description,
                     copies: responseData[key].copies,
                     copiesAvailable: responseData[key].copiesAvailable,
-                    img: responseData[key].image,
+                    img: responseData[key].img,
                 });
             }
             setBooks(loadedBooks);

@@ -35,11 +35,19 @@ export const BookCheckoutPage = () => {
 
     useEffect(() => {
         const fetchBook = async () => {
-            const baseUrl = `http://localhost:6060/api/books/${bookId}`;
-            const url = `${baseUrl}?page=0&size=9`;
+            const baseUrl = `http://localhost:6060/api/books`;
+            let url = `${baseUrl}`;
+
+            if (bookId) {
+                url = `${baseUrl}/${bookId}`; // Add bookId if present
+            } else {
+                // Add pagination parameters only for fetching all books
+                // Hard coded to first pages since we can only check out 5 at this time
+                url = `${url}?page=0&size=9`;
+            }
             const response = await fetch(url);
             if (!response.ok) {
-                throw new Error('Something went wrong');
+                throw new Error('Something went wrong fetching books');
             }
             const responseJson = await response.json();
             const loadedBook: BookModel = {
@@ -49,7 +57,7 @@ export const BookCheckoutPage = () => {
                 description: responseJson.description,
                 copies: responseJson.copies,
                 copiesAvailable: responseJson.copiesAvailable,
-                img: responseJson.image,
+                img: responseJson.img,
             };
             setBook(loadedBook);
             setIsLoading(false);
@@ -67,7 +75,7 @@ export const BookCheckoutPage = () => {
             const responseReviews = await fetch(reviewUrl);
 
             if (!responseReviews.ok) {
-                throw new Error('Something went wrong');
+                throw new Error('Something went wrong getting book reviews');
             }
             const responseJsonReviews = await responseReviews.json();
             const responseData = responseJsonReviews.content;
@@ -131,7 +139,7 @@ export const BookCheckoutPage = () => {
             setIsLoadingUserReview(false);
             setHttpError(error.message);
         });
-    }, [isReviewLeft, getAccessTokenSilently])
+    }, [isReviewLeft, getAccessTokenSilently]);
 
     useEffect(() => {
         const fetchUserCurrentLoansCount = async () => {

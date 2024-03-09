@@ -1,12 +1,14 @@
 import { Redirect, Route, Switch } from 'react-router-dom';
 import './App.css';
+import { ProtectedRoute } from './ProtectedRoute/ProtectedRoute';
+import { BookCheckoutPage } from './layouts/BookCheckoutPage/BookCheckoutPage';
+import { ReviewListPage } from './layouts/BookCheckoutPage/ReviewListPage/ReviewListPage';
+import { CallbackPage } from './layouts/CallbackPage/CallbackPage';
 import { HomePage } from './layouts/HomePage/HomePage';
 import { Footer } from './layouts/NavbarAndFooter/Footer';
 import { Navbar } from './layouts/NavbarAndFooter/Navbar';
 import { SearchBooksPage } from './layouts/SearchBooksPage/SearchBooksPage';
-import { BookCheckoutPage } from './layouts/BookCheckoutPage/BookCheckoutPage';
-import { CallbackPage } from './layouts/CallbackPage/CallbackPage';
-import { ReviewListPage } from './layouts/BookCheckoutPage/ReviewListPage/ReviewListPage';
+import { ShelfPage } from './layouts/ShelfPage/ShelfPage';
 
 export const App = () => {
   return (
@@ -37,6 +39,9 @@ export const App = () => {
           <Route path='/checkout/:bookId'>
             <BookCheckoutPage />
           </Route>
+
+          <ProtectedRoute path="/shelf" component={ShelfPage} />
+
         </Switch>
       </div>
       <Footer />

@@ -1,4 +1,4 @@
-package com.wheelerkode.library.reviewRequestModels;
+package com.wheelerkode.library.requestmodels;
 
 import lombok.Data;
 

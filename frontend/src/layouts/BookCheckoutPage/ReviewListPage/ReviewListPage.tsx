@@ -1,8 +1,8 @@
-import { useEffect, useState } from "react"
-import ReviewModel from "../../../model/ReviewModel"
-import { SpinnerLoading } from "../../Utils/SpinnerLoading";
-import { Review } from "../../Utils/Review";
-import { Pagination } from "../../Utils/Pagination";
+import { useEffect, useState } from 'react'
+import ReviewModel from '../../../model/ReviewModel'
+import { SpinnerLoading } from '../../Utils/SpinnerLoading';
+import { Review } from '../../Utils/Review';
+import { Pagination } from '../../Utils/Pagination';
 
 export const ReviewListPage = () => {
 
@@ -63,7 +63,7 @@ export const ReviewListPage = () => {
 
     if (httpError) {
         return (
-            <div className="container m-5">
+            <div className='container m-5'>
                 <p>{httpError}</p>
             </div>
         )
@@ -77,14 +77,14 @@ export const ReviewListPage = () => {
     const paginate = (pageNumber: number) => setCurrentPage(pageNumber);
 
     return (
-        <div className="container m-5">
+        <div className='container m-5'>
             <div>
                 <h3>Comments: ({reviews.length})</h3>
             </div>
             <p>
                 {indexOfFirstReview + 1} to {lastItem} of {totalAmountOfReviews} items:
             </p>
-            <div className="row">
+            <div className='row'>
                 {reviews.map(review => (
                     <Review review={review} key={review.id} />
                 ))}
@@ -96,4 +96,4 @@ export const ReviewListPage = () => {
                 paginate={paginate} />}
         </div>
     );
-}
+};

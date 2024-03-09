@@ -2,7 +2,8 @@ package com.wheelerkode.library.services;
 
 import com.wheelerkode.library.dao.ReviewRepository;
 import com.wheelerkode.library.entity.Review;
-import com.wheelerkode.library.reviewRequestModels.ReviewRequest;
+import com.wheelerkode.library.requestmodels.ReviewRequest;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -15,27 +16,24 @@ import java.util.Optional;
 
 @Service
 @Transactional
+@RequiredArgsConstructor
 public class ReviewService {
 
     private final ReviewRepository reviewRepository;
 
-    public ReviewService(ReviewRepository reviewRepository) {
-        this.reviewRepository = reviewRepository;
-    }
-
-    public Page<Review> getAllReviews(Pageable pageable) throws Exception {
+    public Page<Review> getAllReviews(Pageable pageable) {
         return reviewRepository.findAll(pageable);
     }
 
-    public Page<Review> getBookById(Long bookId, Pageable pageable) throws Exception {
+    public Page<Review> getBookById(Long bookId, Pageable pageable) {
         return reviewRepository.findByBookId(bookId, pageable);
     }
 
-    public Optional<Review> getReviewById(Long reviewId) throws Exception {
+    public Optional<Review> getReviewById(Long reviewId) {
         return reviewRepository.findById(reviewId);
     }
 
-    public Optional<Review> getByUserEmailAndBookId(String userEmail, Long bookId) throws Exception {
+    public Optional<Review> getByUserEmailAndBookId(String userEmail, Long bookId) {
         return reviewRepository.findByUserEmailAndBookId(userEmail, bookId);
     }
 
