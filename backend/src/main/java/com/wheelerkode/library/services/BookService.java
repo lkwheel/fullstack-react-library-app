@@ -92,12 +92,23 @@ public class BookService {
 
                 TimeUnit time = TimeUnit.DAYS;
 
-                long differenceInTime = time.convert(d2.getTime() - d1.getTime(),
-                        TimeUnit.MILLISECONDS);
+                long differenceInTime = time.convert(d2.getTime() - d1.getTime(), TimeUnit.MILLISECONDS);
                 shelfCurrentLoansResponses.add(new ShelfCurrentLoansResponse(book, (int) differenceInTime));
             }
         }
 
         return shelfCurrentLoansResponses;
+    }
+
+    public void returnBook(String userEmail, Long bookId) throws Exception {
+        Optional<Book> book = bookRepository.findById(bookId);
+        Checkout validateCheckout = checkoutRepository.findByUserEmailAndBookId(userEmail, bookId);
+        if (!book.isPresent() || validateCheckout == null) {
+            throw new Exception("Book does not exist or not checked out by user");
+        }
+
+        book.get().setCopiesAvailable(book.get().getCopiesAvailable() + 1);
+        bookRepository.save(book.get());
+        checkoutRepository.deleteById(validateCheckout.getId());
     }
 }

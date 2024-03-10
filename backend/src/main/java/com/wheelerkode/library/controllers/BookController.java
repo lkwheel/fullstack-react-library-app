@@ -61,4 +61,10 @@ public class BookController {
             @RequestParam("userEmail") String userEmail, @RequestParam("bookId") Long bookId) {
         return bookService.checkoutBookByUser(userEmail, bookId);
     }
+
+    @PutMapping("protected/return")
+    public void returnBook(
+            @RequestParam("userEmail") String userEmail, @RequestParam("bookId") Long bookId) throws Exception {
+        bookService.returnBook(userEmail, bookId);
+    }
 }

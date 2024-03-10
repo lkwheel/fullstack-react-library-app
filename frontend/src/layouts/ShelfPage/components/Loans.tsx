@@ -15,6 +15,8 @@ export const Loans = () => {
     const [shelfCurrentLoans, setShelfCurrentLoans] = useState<ShelfCurrentLoans[]>([]);
     const [isLoadingCurrentLoans, setIsLoadingCurrentLoans] = useState(true);
 
+    const [checkout, setCheckout] = useState(false);
+
     useEffect(() => {
         const fetchUserCurrentLoans = async () => {
             if (isAuthenticated && user?.email) {
@@ -43,7 +45,7 @@ export const Loans = () => {
             setHttpError(error.message);
         });
         window.scrollTo(0, 0);
-    }, [getAccessTokenSilently]);
+    }, [getAccessTokenSilently, checkout]);
 
     if (isLoadingCurrentLoans) {
         return (
@@ -57,6 +59,25 @@ export const Loans = () => {
                 <p>{httpError}</p>
             </div>
         );
+    }
+
+    async function returnBook(bookId: number) {
+        if (isAuthenticated && user?.email) {
+            const apiAccessToken = await getAccessTokenSilently();
+            const url = `http://localhost:6060/api/books/protected/return?userEmail=${user?.email}&bookId=${bookId}`;
+            const requestOptions = {
+                method: 'PUT',
+                headers: {
+                    'content-type': 'application/json',
+                    'Authorization': `Bearer ${apiAccessToken}`,
+                }
+            };
+            const returnResponse = await fetch(url, requestOptions);
+            if (!returnResponse.ok) {
+                throw new Error('Something went wrong returning book');
+            }
+            setCheckout(!checkout);
+        }
     }
 
     return (
@@ -119,7 +140,9 @@ export const Loans = () => {
                                     </div>
                                 </div>
                                 <hr />
-                                <LoansModal shelfCurrentLoan={shelfCurrentLoan} mobile={false} />
+                                <LoansModal shelfCurrentLoan={shelfCurrentLoan}
+                                    mobile={false}
+                                    returnBook={returnBook} />
                             </div>
                         ))}
                     </> :
@@ -134,7 +157,7 @@ export const Loans = () => {
                 }
             </div>
             {/* Mobile */}
-            <div className='container d-lg-block-none mt-2'>
+            <div className='container d-lg-none mt-2'>
                 {shelfCurrentLoans.length > 0 ?
                     <>
                         <h5 className='mb-3'>Current Loans: </h5>
@@ -189,7 +212,9 @@ export const Loans = () => {
                                     </div>
                                 </div>
                                 <hr />
-                                <LoansModal shelfCurrentLoan={shelfCurrentLoan} mobile={true} />
+                                <LoansModal shelfCurrentLoan={shelfCurrentLoan}
+                                    mobile={true}
+                                    returnBook={returnBook} />
                             </div>
                         ))}
                     </> :
