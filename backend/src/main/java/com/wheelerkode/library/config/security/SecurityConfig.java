@@ -17,17 +17,13 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain httpSecurity(final HttpSecurity http) throws Exception {
-        return http
-                .authorizeHttpRequests(authz -> authz
-                        .requestMatchers("/api/messages/protected",
-                                "/api/messages/admin",
-                                "/api/books/protected/**",
-                                "/api/reviews/protected/**").authenticated()
-                        .anyRequest().permitAll())
+        return http.authorizeHttpRequests(authz -> authz.requestMatchers(
+                    "/api/books/protected/**",
+                    "/api/reviews/protected/**",
+                    "/api/histories/protected/**"
+                ).authenticated().anyRequest().permitAll())
                 .cors(Customizer.withDefaults())
-                .oauth2ResourceServer(oauth2 -> oauth2
-                        .jwt(Customizer.withDefaults())
-                        .authenticationEntryPoint(authenticationErrorHandler))
-                .build();
+                .oauth2ResourceServer(oauth2 -> oauth2.jwt(Customizer.withDefaults())
+                        .authenticationEntryPoint(authenticationErrorHandler)).build();
     }
 }

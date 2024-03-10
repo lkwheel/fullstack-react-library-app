@@ -2,8 +2,10 @@ package com.wheelerkode.library.services;
 
 import com.wheelerkode.library.dao.BookRepository;
 import com.wheelerkode.library.dao.CheckoutRepository;
+import com.wheelerkode.library.dao.HistoryRepository;
 import com.wheelerkode.library.entity.Book;
 import com.wheelerkode.library.entity.Checkout;
+import com.wheelerkode.library.entity.History;
 import com.wheelerkode.library.responsemodels.ShelfCurrentLoansResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -23,6 +25,7 @@ public class BookService {
 
     private final BookRepository bookRepository;
     private final CheckoutRepository checkoutRepository;
+    private final HistoryRepository historyRepository;
 
     public Book checkoutBook(String userEmail, Long bookId) throws Exception {
         Optional<Book> book = bookRepository.findById(bookId);
@@ -108,8 +111,20 @@ public class BookService {
         }
 
         book.get().setCopiesAvailable(book.get().getCopiesAvailable() + 1);
+
         bookRepository.save(book.get());
         checkoutRepository.deleteById(validateCheckout.getId());
+
+        History history = new History(
+                book.get().getTitle(),
+                book.get().getAuthor(),
+                book.get().getDescription(),
+                book.get().getImg(),
+                userEmail,
+                validateCheckout.getCheckoutDate(),
+                LocalDate.now().toString());
+
+        historyRepository.save(history);
     }
 
     public void renewLoan(String userEmail, Long bookId) throws Exception {

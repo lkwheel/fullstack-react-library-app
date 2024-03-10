@@ -19,6 +19,9 @@ spring:
     properties:
       hibernate:
         dialect: org.hibernate.dialect.MySQL8Dialect
+        hibernate.format_sql: true
+    show-sql: true
+
   mvc:
     throw-exception-if-no-handler-found: true
   web:
