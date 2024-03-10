@@ -87,11 +87,14 @@ public class BookService {
                 Date d1 = sdf.parse(checkout.get().getReturnDate());
                 Date d2 = sdf.parse(LocalDate.now().toString());
 
-                TimeUnit time = TimeUnit.DAYS;
+                TimeUnit time = TimeUnit.HOURS;
 
-                long differenceInTime = time.convert(d1.getTime() - d2.getTime(), TimeUnit.MILLISECONDS);
-                shelfCurrentLoansResponses.add(new ShelfCurrentLoansResponse(book, (int) differenceInTime));
+                long differenceInHours = time.convert(d1.getTime() - d2.getTime(), TimeUnit.MILLISECONDS);
+                int differenceInDays = (int) Math.ceil((double) differenceInHours / 24);
+
+                shelfCurrentLoansResponses.add(new ShelfCurrentLoansResponse(book, differenceInDays));
             }
+
         }
 
         return shelfCurrentLoansResponses;
