@@ -67,4 +67,10 @@ public class BookController {
             @RequestParam("userEmail") String userEmail, @RequestParam("bookId") Long bookId) throws Exception {
         bookService.returnBook(userEmail, bookId);
     }
+
+    @PutMapping("protected/renew/loan")
+    public void renewBook(
+            @RequestParam("userEmail") String userEmail, @RequestParam("bookId") Long bookId) throws Exception {
+        bookService.renewLoan(userEmail, bookId);
+    }
 }

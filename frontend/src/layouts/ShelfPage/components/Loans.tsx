@@ -1,8 +1,8 @@
 import { useAuth0 } from '@auth0/auth0-react';
 import { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import ShelfCurrentLoans from '../../../model/ShelfCurrentLoans';
 import { SpinnerLoading } from '../../Utils/SpinnerLoading';
-import { Link } from 'react-router-dom';
 import { LoansModal } from './LoansModal';
 
 export const Loans = () => {
@@ -80,6 +80,25 @@ export const Loans = () => {
         }
     }
 
+    async function renewLoan(bookId: number) {
+        if (isAuthenticated && user?.email) {
+            const apiAccessToken = await getAccessTokenSilently();
+            const url = `http://localhost:6060/api/books/protected/renew/loan?userEmail=${user?.email}&bookId=${bookId}`;
+            const requestOptions = {
+                method: 'PUT',
+                headers: {
+                    'content-type': 'application/json',
+                    'Authorization': `Bearer ${apiAccessToken}`,
+                }
+            };
+            const renewResponse = await fetch(url, requestOptions);
+            if (!renewResponse.ok) {
+                throw new Error('Something went wrong renewing book loan');
+            }
+            setCheckout(!checkout);
+        }
+    }
+
     return (
         <div>
             {/* Desktop */}
@@ -142,7 +161,8 @@ export const Loans = () => {
                                 <hr />
                                 <LoansModal shelfCurrentLoan={shelfCurrentLoan}
                                     mobile={false}
-                                    returnBook={returnBook} />
+                                    returnBook={returnBook}
+                                    renewLoan={renewLoan} />
                             </div>
                         ))}
                     </> :
@@ -214,7 +234,8 @@ export const Loans = () => {
                                 <hr />
                                 <LoansModal shelfCurrentLoan={shelfCurrentLoan}
                                     mobile={true}
-                                    returnBook={returnBook} />
+                                    returnBook={returnBook}
+                                    renewLoan={renewLoan} />
                             </div>
                         ))}
                     </> :

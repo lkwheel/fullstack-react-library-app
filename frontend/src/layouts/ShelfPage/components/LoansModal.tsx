@@ -3,7 +3,8 @@ import ShelfCurrentLoans from '../../../model/ShelfCurrentLoans';
 export const LoansModal: React.FC<{
     shelfCurrentLoan: ShelfCurrentLoans,
     mobile: boolean,
-    returnBook: any
+    returnBook: any,
+    renewLoan: any
 }> = (props) => {
     return (
         <div className='modal fade'
@@ -67,7 +68,14 @@ export const LoansModal: React.FC<{
                                         aria-current='true'>
                                         Return Book
                                     </button>
-                                    <button data-bs-dismiss='modal'
+                                    <button onClick={
+                                            props.shelfCurrentLoan.daysLeft < 0
+                                                ?
+                                                (event) => event.preventDefault()
+                                                :
+                                                () => props.renewLoan(props.shelfCurrentLoan.book.id)
+                                        }
+                                        data-bs-dismiss='modal'
                                         className={
                                             props.shelfCurrentLoan.daysLeft < 0 ?
                                                 'list-group-item list-group-item-action inactiveLink' :
