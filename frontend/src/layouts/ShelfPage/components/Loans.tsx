@@ -21,7 +21,7 @@ export const Loans = () => {
         const fetchUserCurrentLoans = async () => {
             if (isAuthenticated && user?.email) {
                 const apiAccessToken = await getAccessTokenSilently();
-                const url = `http://localhost:6060/api/books/protected/currentloans?userEmail=${user?.email}`;
+                const url = `http://localhost:6060/api/books/protected/current-loans?userEmail=${user?.email}`;
                 const requestOptions = {
                     method: 'GET',
                     headers: {

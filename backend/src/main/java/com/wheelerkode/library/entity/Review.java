@@ -2,6 +2,7 @@ package com.wheelerkode.library.entity;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.util.Date;
@@ -9,6 +10,7 @@ import java.util.Date;
 @Entity
 @Table(name = "review")
 @Data
+@NoArgsConstructor
 public class Review {
 
     @Id
@@ -31,4 +33,12 @@ public class Review {
 
     @Column(name = "review_description")
     private String reviewDescription;
+
+    public Review(String userEmail, Date date, double rating, Long bookId, String reviewDescription) {
+        this.userEmail = userEmail;
+        this.date = date;
+        this.rating = rating;
+        this.bookId = bookId;
+        this.reviewDescription = reviewDescription;
+    }
 }

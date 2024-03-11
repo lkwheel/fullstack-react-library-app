@@ -145,7 +145,7 @@ export const BookCheckoutPage = () => {
         const fetchUserCurrentLoansCount = async () => {
             if (isAuthenticated && user?.email) {
                 const apiAccessToken = await getAccessTokenSilently();
-                const url = `http://localhost:6060/api/books/protected/currentloans/count?userEmail=${user?.email}`;
+                const url = `http://localhost:6060/api/books/protected/current-loans/count?userEmail=${user?.email}`;
                 const requestOptions = {
                     method: 'GET',
                     headers: {
@@ -175,7 +175,7 @@ export const BookCheckoutPage = () => {
         const fetchUserCheckedOutBook = async () => {
             if (isAuthenticated && user?.email) {
                 const apiAccessToken = await getAccessTokenSilently();
-                const url = `http://localhost:6060/api/books/protected/ischeckedout/byuser?bookId=${bookId}&userEmail=${user?.email}`;
+                const url = `http://localhost:6060/api/books/protected/is-checked-out/by-user?bookId=${bookId}&userEmail=${user?.email}`;
                 const requestOptions = {
                     method: 'GET',
                     headers: {

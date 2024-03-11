@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @RestController
@@ -24,53 +25,65 @@ public class BookController {
         return ResponseEntity.ok().body(books);
     }
 
-    @GetMapping("/protected/currentloans")
-    public List<ShelfCurrentLoansResponse> currentLoans(@RequestParam("userEmail") String userEmail) throws Exception {
-        return bookService.currentLoans(userEmail);
+    @GetMapping("/protected/current-loans")
+    public ResponseEntity<List<ShelfCurrentLoansResponse>> getCurrentLoans(@RequestParam("userEmail") String userEmail)
+            throws Exception {
+        List<ShelfCurrentLoansResponse> currentLoans = bookService.currentLoans(userEmail);
+        return ResponseEntity.ok().body(currentLoans);
     }
 
     @GetMapping("/{bookId}")
     public ResponseEntity<Book> getBook(@PathVariable Long bookId) {
         Optional<Book> bookById = bookService.getBookById(bookId);
-        return bookById.map(book -> ResponseEntity.ok().body(book)).orElseGet(() -> ResponseEntity.notFound().build());
+        return bookById.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    @GetMapping("findByTitleContaining")
-    public Page<Book> getBooksByTitleContaining(@RequestParam("title") String title, Pageable pageable) {
-        return bookService.getBooksByTitleContaining(title, pageable);
+    @GetMapping("/find-by-title-containing")
+    public ResponseEntity<Page<Book>> getBooksByTitleContaining(@RequestParam("title") String title,
+                                                                Pageable pageable) {
+        Page<Book> books = bookService.getBooksByTitleContaining(title, pageable);
+        return ResponseEntity.ok().body(books);
     }
 
-    @GetMapping("findByCategory")
-    public Page<Book> getBooksByCategory(@RequestParam("category") String category, Pageable pageable) {
-        return bookService.getBooksByCategory(category, pageable);
+    @GetMapping("/find-by-category")
+    public ResponseEntity<Page<Book>> getBooksByCategory(@RequestParam("category") String category, Pageable pageable) {
+        Page<Book> books = bookService.getBooksByCategory(category, pageable);
+        return ResponseEntity.ok().body(books);
     }
 
     @PutMapping("/protected/checkout")
-    public Book checkoutBook(
-            @RequestParam("bookId") Long bookId, @RequestParam("userEmail") String userEmail) throws Exception {
-        return bookService.checkoutBook(userEmail, bookId);
+    public ResponseEntity<Book> checkoutBook(@RequestParam Map<String, String> params) throws Exception {
+        Long bookId = Long.valueOf(params.get("bookId"));
+        String userEmail = params.get("userEmail");
+        Book checkedOutBook = bookService.checkoutBook(userEmail, bookId);
+        return ResponseEntity.ok().body(checkedOutBook);
     }
 
-    @GetMapping("/protected/currentloans/count")
-    public Integer currentLoansCount(@RequestParam("userEmail") String userEmail) {
-        return bookService.currentLoansCount(userEmail);
+    @GetMapping("/protected/current-loans/count")
+    public ResponseEntity<Integer> getCurrentLoansCount(@RequestHeader("Authorization") String token,
+                                                        @RequestParam("userEmail") String userEmail) {
+        Integer count = bookService.currentLoansCount(userEmail);
+        return ResponseEntity.ok().body(count);
     }
 
-    @GetMapping("/protected/ischeckedout/byuser")
-    public Boolean checkoutBookByUser(
-            @RequestParam("userEmail") String userEmail, @RequestParam("bookId") Long bookId) {
-        return bookService.checkoutBookByUser(userEmail, bookId);
+    @GetMapping("/protected/is-checked-out/by-user")
+    public ResponseEntity<Boolean> isBookCheckedOutByUser(@RequestParam("userEmail") String userEmail,
+                                                          @RequestParam("bookId") Long bookId) {
+        Boolean isCheckedOut = bookService.checkoutBookByUser(userEmail, bookId);
+        return ResponseEntity.ok().body(isCheckedOut);
     }
 
-    @PutMapping("protected/return")
-    public void returnBook(
-            @RequestParam("userEmail") String userEmail, @RequestParam("bookId") Long bookId) throws Exception {
+    @PutMapping("/protected/return")
+    public ResponseEntity<Void> returnBook(@RequestParam("userEmail") String userEmail,
+                                           @RequestParam("bookId") Long bookId) throws Exception {
         bookService.returnBook(userEmail, bookId);
+        return ResponseEntity.noContent().build();
     }
 
-    @PutMapping("protected/renew/loan")
-    public void renewBook(
-            @RequestParam("userEmail") String userEmail, @RequestParam("bookId") Long bookId) throws Exception {
+    @PutMapping("/protected/renew-loan")
+    public ResponseEntity<Void> renewBookLoan(@RequestParam("userEmail") String userEmail,
+                                              @RequestParam("bookId") Long bookId) throws Exception {
         bookService.renewLoan(userEmail, bookId);
+        return ResponseEntity.noContent().build();
     }
 }

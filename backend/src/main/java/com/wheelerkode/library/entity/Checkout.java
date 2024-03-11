@@ -2,10 +2,12 @@ package com.wheelerkode.library.entity;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "checkout")
 @Data
+@NoArgsConstructor
 public class Checkout {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -19,9 +21,6 @@ public class Checkout {
     private String returnDate;
     @Column(name = "book_id")
     private Long bookId;
-
-    public Checkout() {
-    }
 
     public Checkout(String userEmail, String checkoutDate, String returnDate, Long bookId) {
         this.userEmail = userEmail;

@@ -14,7 +14,8 @@ import java.io.IOException;
 public class ResponseHeadersFilter implements Filter {
 
     @Override
-    public void doFilter(final ServletRequest request, final ServletResponse response, final FilterChain chain) throws IOException, ServletException {
+    public void doFilter(final ServletRequest request, final ServletResponse response, final FilterChain chain)
+            throws IOException, ServletException {
         final var httpResponse = (HttpServletResponse) response;
 
         httpResponse.setIntHeader("X-XSS-Protection", 0);

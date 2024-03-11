@@ -2,10 +2,12 @@ package com.wheelerkode.library.entity;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "History")
 @Data
+@NoArgsConstructor
 public class History {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -32,9 +34,6 @@ public class History {
 
     @Column(name = "returned_date")
     private String returnedDate;
-
-    public History() {
-    }
 
     public History(String title, String author, String description, String img, String userEmail, String checkoutDate,
                    String returnedDate) {
