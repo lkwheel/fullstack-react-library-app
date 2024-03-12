@@ -12,7 +12,7 @@ export const ShelfPage = () => {
                     <div className='nav nav-tabs' id='nav-tab' role='tablist'>
                         <button id='nav-loans-tab'
                             onClick={() => setHistoryClick(false)}
-                            className='nav-link active'
+                            className='nav-link-active'
                             data-bs-toggle='tab'
                             data-bs-target='#nav-loans'
                             type='button'

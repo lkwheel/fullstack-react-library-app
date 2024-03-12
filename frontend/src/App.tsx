@@ -9,6 +9,7 @@ import { Footer } from './layouts/NavbarAndFooter/Footer';
 import { Navbar } from './layouts/NavbarAndFooter/Navbar';
 import { SearchBooksPage } from './layouts/SearchBooksPage/SearchBooksPage';
 import { ShelfPage } from './layouts/ShelfPage/ShelfPage';
+import { MessagesPage } from './layouts/MessagesPage/MessagesPage';
 
 export const App = () => {
   return (
@@ -24,7 +25,7 @@ export const App = () => {
             <HomePage />
           </Route>
 
-          <Route path="/callback">
+          <Route path='/callback'>
             <CallbackPage />
           </Route>
 
@@ -40,7 +41,8 @@ export const App = () => {
             <BookCheckoutPage />
           </Route>
 
-          <ProtectedRoute path="/shelf" component={ShelfPage} />
+          <ProtectedRoute path='/shelf' component={ShelfPage} />
+          <ProtectedRoute path='/messages' component={MessagesPage} />
 
         </Switch>
       </div>
