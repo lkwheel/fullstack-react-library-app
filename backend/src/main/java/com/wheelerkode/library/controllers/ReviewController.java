@@ -20,36 +20,42 @@ public class ReviewController {
     }
 
     @GetMapping()
-    public Page<Review> getAllReviews(Pageable pageable) {
-        return reviewService.getAllReviews(pageable);
+    public ResponseEntity<Page<Review>> getAllReviews(Pageable pageable) {
+        Page<Review> reviews = reviewService.getAllReviews(pageable);
+        return ResponseEntity.ok().body(reviews);
     }
 
     @GetMapping("/{reviewId}")
     public ResponseEntity<Review> getReview(@PathVariable Long reviewId, Pageable pageable) {
         Optional<Review> reviewById = reviewService.getReviewById(reviewId);
-        return reviewById.map(review -> ResponseEntity.ok().body(review)).orElseGet(() -> ResponseEntity.notFound().build());
+        return reviewById.map(review -> ResponseEntity.ok().body(review))
+                         .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    @GetMapping("/findByBookId")
-    public Page<Review> getBookById(@RequestParam("bookId") Long bookId, Pageable pageable) {
-        return reviewService.getBookById(bookId, pageable);
+    @GetMapping("/find-by-book-id")
+    public ResponseEntity<Page<Review>> getBookById(@RequestParam("bookId") Long bookId, Pageable pageable) {
+        Page<Review> reviews = reviewService.getBookById(bookId, pageable);
+        return ResponseEntity.ok().body(reviews);
     }
 
-    @GetMapping("/findByUserEmailAndBookId")
-    public ResponseEntity<Review> getByUserEmailAndBookId(
-            @RequestParam("userEmail") String userEmail, @RequestParam("bookId") Long bookId) {
+    @GetMapping("/find-by-user-email-and-book-id")
+    public ResponseEntity<Review> getByUserEmailAndBookId(@RequestParam("userEmail") String userEmail,
+                                                          @RequestParam("bookId") Long bookId) {
         Optional<Review> byUserEmailAndBookId = reviewService.getByUserEmailAndBookId(userEmail, bookId);
-        return byUserEmailAndBookId.map(review -> ResponseEntity.ok().body(review)).orElseGet(() -> ResponseEntity.notFound().build());
+        return byUserEmailAndBookId.map(review -> ResponseEntity.ok().body(review))
+                                   .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @PostMapping("/protected")
-    public void postReview(
-            @RequestParam("userEmail") String userEmail, @RequestBody ReviewRequest reviewRequest) throws Exception {
+    public ResponseEntity<Void> postReview(@RequestParam("userEmail") String userEmail,
+                                           @RequestBody ReviewRequest reviewRequest) throws Exception {
         reviewService.postReview(userEmail, reviewRequest);
+        return ResponseEntity.noContent().build();
     }
 
     @GetMapping("/protected/user/book")
-    public Boolean reviewBookByUser(@RequestParam("userEmail") String userEmail, @RequestParam("bookId") Long bookId) {
-        return reviewService.userReviewListed(userEmail, bookId);
+    public ResponseEntity<Boolean> reviewBookByUser(@RequestParam("userEmail") String userEmail,
+                                                    @RequestParam("bookId") Long bookId) {
+        return ResponseEntity.ok().body(reviewService.userReviewListed(userEmail, bookId));
     }
 }

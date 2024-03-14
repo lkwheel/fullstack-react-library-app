@@ -23,7 +23,7 @@ export const HistoryPage = () => {
         const fetchUserHistory = async () => {
             if (isAuthenticated && user?.email) {
                 const apiAccessToken = await getAccessTokenSilently();
-                const baseUrl = `http://localhost:6060/api/histories/protected/findhistorybyuseremail?userEmail=${user?.email}`;
+                const baseUrl = `http://localhost:6060/api/histories/protected/find-by-user-email?userEmail=${user?.email}`;
                 const url = `${baseUrl}&page=${currentPage - 1}&size=5`;
 
                 const requestOptions = {

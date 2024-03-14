@@ -71,7 +71,7 @@ export const BookCheckoutPage = () => {
 
     useEffect(() => {
         const fetchBookReviews = async () => {
-            const reviewUrl = `http://localhost:6060/api/reviews/findByBookId?bookId=${bookId}`;
+            const reviewUrl = `http://localhost:6060/api/reviews/find-by-book-id?bookId=${bookId}`;
             const responseReviews = await fetch(reviewUrl);
 
             if (!responseReviews.ok) {

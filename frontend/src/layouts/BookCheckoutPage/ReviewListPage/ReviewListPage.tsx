@@ -20,7 +20,7 @@ export const ReviewListPage = () => {
 
     useEffect(() => {
         const fetchBookReviews = async () => {
-            const reviewUrl = `http://localhost:6060/api/reviews/findByBookId?bookId=${bookId}&page=${currentPage - 1}&size=${reviewsPerPage};`;
+            const reviewUrl = `http://localhost:6060/api/reviews/find-by-book-id?bookId=${bookId}&page=${currentPage - 1}&size=${reviewsPerPage};`;
             const responseReviews = await fetch(reviewUrl);
 
             if (!responseReviews.ok) {
