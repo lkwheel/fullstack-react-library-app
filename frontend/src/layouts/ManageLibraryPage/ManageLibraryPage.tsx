@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import { Redirect } from 'react-router-dom';
 import AuthUtils from '../../Auth/AuthUtils';
 import { SpinnerLoading } from '../Utils/SpinnerLoading';
+import { AdminMessages } from './components/AdminMessages';
 
 export const ManageLibraryPage = () => {
     const { user, isAuthenticated, getAccessTokenSilently } = useAuth0();
@@ -147,7 +148,7 @@ export const ManageLibraryPage = () => {
                         id='nav-messages'
                         role='tabpanel'
                         aria-labelledby='nav-messages-tab'>
-                        {messagesClick ? <>Admin Messages</> : <></>}
+                        {messagesClick ? <AdminMessages /> : <></>}
                     </div>
                 </div>
             </div>

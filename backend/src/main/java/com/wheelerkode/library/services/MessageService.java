@@ -25,4 +25,8 @@ public class MessageService {
     public Page<Message> getByUserEmail(String userEmail, Pageable pageable) {
         return messageRepository.findByUserEmail(userEmail, pageable);
     }
+
+    public Page<Message> getByClosed(boolean closed, Pageable pageable) {
+        return messageRepository.findByClosed(closed, pageable);
+    }
 }

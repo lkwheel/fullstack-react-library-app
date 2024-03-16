@@ -23,6 +23,13 @@ public class MessageController {
         return ResponseEntity.ok().body(messages);
     }
 
+    @GetMapping("/protected/find-by-closed")
+    public ResponseEntity<Page<Message>> getMessagesByUserEmail(@RequestParam("closed") Boolean closed,
+                                                                Pageable pageable) {
+        Page<Message> messages = messageService.getByClosed(closed, pageable);
+        return ResponseEntity.ok().body(messages);
+    }
+
     @PostMapping("/protected/add")
     public ResponseEntity<Void> postMessage(@RequestParam("userEmail") String userEmail,
                                             @RequestBody Message messageRequest) {
