@@ -1,5 +1,6 @@
 package com.wheelerkode.library.controllers;
 
+import com.wheelerkode.library.utils.JwtUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
@@ -13,6 +14,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
+import static com.wheelerkode.library.utils.JwtUtils.getJwtFromAuthentication;
+
 @RestController
 @RequestMapping("/api/user/protected")
 public class UserController {
@@ -23,21 +26,16 @@ public class UserController {
     @GetMapping("/permissions")
     public ResponseEntity<?> getUserPermissions() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (authentication == null || !(authentication.getPrincipal() instanceof Jwt)) {
+        Jwt jwt = getJwtFromAuthentication(authentication);
+        if (jwt == null) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("User not authenticated or JWT token not found");
         }
 
-        Jwt jwt = (Jwt) authentication.getPrincipal();
-
-        List<String> permissions = jwt.getClaimAsStringList("permissions");
-
-        if (permissions == null) {
-            // Handle case where permissions claim is missing or not a string array
-            // For example, return a 403 Forbidden response
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Permissions not found in JWT token");
+        if (JwtUtils.isAdmin(jwt)) {
+            return ResponseEntity.ok("User is an admin");
+        } else {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("User is not an admin");
         }
-
-        return ResponseEntity.ok(permissions);
     }
 
 

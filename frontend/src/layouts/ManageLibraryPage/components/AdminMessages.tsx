@@ -4,6 +4,7 @@ import MessageModel from '../../../model/MessageModel';
 import { SpinnerLoading } from '../../Utils/SpinnerLoading';
 import { Pagination } from '../../Utils/Pagination';
 import { AdminMessage } from './AdminMessage';
+import AdminMessageRequest from '../../../model/AdminMessageRequest';
 
 export const AdminMessages = () => {
     const { user, isAuthenticated, getAccessTokenSilently } = useAuth0();
@@ -14,11 +15,46 @@ export const AdminMessages = () => {
 
     // Messages endpoint state
     const [messages, setMessages] = useState<MessageModel[]>([]);
-    const [messagesPerPage] = useState(5);
 
     // Pagination
     const [currentPage, setCurrentPage] = useState(1);
     const [totalPages, setTotalPages] = useState(0);
+
+    // Recall useEffect
+    const [btnSubmit, setBtnSubmit] = useState(false);
+
+    useEffect(() => {
+        const fetchCheckAdminUseRole = async () => {
+            if (isAuthenticated && user?.email) {
+                try {
+                    const apiAccessToken = await getAccessTokenSilently();
+                    const url = `http://localhost:6060/api/user/protected/permissions`;
+                    const requestOptions = {
+                        method: 'GET',
+                        headers: {
+                            'content-type': 'application/json',
+                            'Authorization': `Bearer ${apiAccessToken}`,
+                        }
+                    };
+                    const response = await fetch(url, requestOptions);
+                    if (!response.ok) {
+                        throw new Error('Something went wrong getting user permissions');
+                    }
+                    setIsAdmin(true);
+                    setIsLoading(false);
+                } catch (error: any) {
+                    setIsAdmin(false);
+                    setHttpError(error.message);
+                    setIsLoading(false);
+                }
+            } else {
+                setIsAdmin(false);
+                setIsLoading(false);
+            }
+        };
+
+        fetchCheckAdminUseRole();
+    }, [getAccessTokenSilently, isAuthenticated, user, isAdmin]);
 
     useEffect(() => {
         const fetchMessages = async () => {
@@ -50,7 +86,7 @@ export const AdminMessages = () => {
             setIsLoading(false);
             setHttpError(error.message);
         });
-    }, [getAccessTokenSilently, currentPage]);
+    }, [getAccessTokenSilently, isAuthenticated, user, currentPage, btnSubmit]);
 
     if (isLoading) {
         return (
@@ -68,13 +104,34 @@ export const AdminMessages = () => {
 
     const paginate = (pageNumber: number) => setCurrentPage(pageNumber);
 
+    async function submitResponseToQuestion(id: number, adminResponse: string) {
+        if (isAuthenticated && user?.email && isAdmin && id !== null && adminResponse !== '') {
+            const url = `http://localhost:6060/api/messages/protected/admin/message?userEmail=${user.email}`;
+            const apiAccessToken = await getAccessTokenSilently();
+            const messageAdminRequestModel: AdminMessageRequest = new AdminMessageRequest(id, adminResponse);
+            const requestOptions = {
+                method: 'PUT',
+                headers: {
+                    'content-type': 'application/json',
+                    'Authorization': `Bearer ${apiAccessToken}`,
+                },
+                body: JSON.stringify(messageAdminRequestModel)
+            };
+            const messageAdminRequestResponse = await fetch(url, requestOptions);
+            if (!messageAdminRequestResponse.ok) {
+                throw new Error('Something went wrong submitting response');
+            }
+            setBtnSubmit(!btnSubmit);
+        }
+    }
+
     return (
         <div className='mt-3'>
             {messages.length > 0 ?
                 <>
                     <h5>Pending Q/A:</h5>
                     {messages.map(message => (
-                        <AdminMessage message={message} key={message.id} />
+                        <AdminMessage message={message} key={message.id} submitResponseToQuestion={submitResponseToQuestion} />
                     ))}
                 </>
                 :

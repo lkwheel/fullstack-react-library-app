@@ -2,12 +2,20 @@ package com.wheelerkode.library.controllers;
 
 
 import com.wheelerkode.library.entity.Message;
+import com.wheelerkode.library.requestmodels.AdminQuestionRequest;
 import com.wheelerkode.library.services.MessageService;
+import com.wheelerkode.library.utils.JwtUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.*;
+
+import static com.wheelerkode.library.utils.JwtUtils.getJwtFromAuthentication;
 
 @RestController
 @RequestMapping("api/messages")
@@ -35,5 +43,22 @@ public class MessageController {
                                             @RequestBody Message messageRequest) {
         messageService.postMessage(messageRequest, userEmail);
         return ResponseEntity.noContent().build();
+    }
+
+    @PutMapping("/protected/admin/message")
+    public ResponseEntity<?> putMessage(@RequestParam("userEmail") String userEmail,
+                                        @RequestBody AdminQuestionRequest adminQuestionRequest) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        Jwt jwt = getJwtFromAuthentication(authentication);
+        if (jwt == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("User not authenticated or JWT token not found");
+        }
+
+        if (JwtUtils.isAdmin(jwt)) {
+            messageService.putMessage(adminQuestionRequest, userEmail);
+            return ResponseEntity.noContent().build();
+        } else {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("User is not an admin");
+        }
     }
 }

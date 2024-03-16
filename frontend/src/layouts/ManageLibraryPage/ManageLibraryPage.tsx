@@ -1,7 +1,6 @@
 import { useAuth0 } from '@auth0/auth0-react';
 import { useEffect, useState } from 'react';
 import { Redirect } from 'react-router-dom';
-import AuthUtils from '../../Auth/AuthUtils';
 import { SpinnerLoading } from '../Utils/SpinnerLoading';
 import { AdminMessages } from './components/AdminMessages';
 
@@ -32,11 +31,7 @@ export const ManageLibraryPage = () => {
                     if (!response.ok) {
                         throw new Error('Something went wrong getting user permissions');
                     }
-
-                    const permissions = await response.json();
-                    // Check if 'admin' is included in the permissions array
-                    const isAdmin = permissions.includes('admin');
-                    setIsAdmin(isAdmin);
+                    setIsAdmin(true);
                     setIsLoading(false);
                 } catch (error: any) {
                     setIsAdmin(false);
@@ -50,7 +45,7 @@ export const ManageLibraryPage = () => {
         };
 
         fetchCheckAdminUseRole();
-    }, [getAccessTokenSilently, isAuthenticated, user]);
+    }, [getAccessTokenSilently, isAuthenticated, user, isAdmin]);
 
 
     function addBookClickFunction() {
