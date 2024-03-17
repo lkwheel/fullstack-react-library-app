@@ -106,7 +106,7 @@ export const AdminMessages = () => {
 
     async function submitResponseToQuestion(id: number, adminResponse: string) {
         if (isAuthenticated && user?.email && isAdmin && id !== null && adminResponse !== '') {
-            const url = `http://localhost:6060/api/messages/protected/admin/message?userEmail=${user.email}`;
+            const url = `http://localhost:6060/api/messages/protected/admin/message`;
             const apiAccessToken = await getAccessTokenSilently();
             const messageAdminRequestModel: AdminMessageRequest = new AdminMessageRequest(id, adminResponse);
             const requestOptions = {

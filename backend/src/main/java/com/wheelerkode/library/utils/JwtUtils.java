@@ -19,6 +19,10 @@ public class JwtUtils {
         return (Jwt) authentication.getPrincipal();
     }
 
+    public static String getUserIdFromJwt(Jwt jwt) {
+        return jwt.getClaimAsString("sub");
+    }
+
     private static List<String> getPermissionsFromJwt(Jwt jwt) {
         return jwt.getClaimAsStringList("permissions");
     }

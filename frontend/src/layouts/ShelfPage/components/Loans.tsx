@@ -21,7 +21,7 @@ export const Loans = () => {
         const fetchUserCurrentLoans = async () => {
             if (isAuthenticated && user?.email) {
                 const apiAccessToken = await getAccessTokenSilently();
-                const url = `http://localhost:6060/api/books/protected/current-loans?userEmail=${user?.email}`;
+                const url = `http://localhost:6060/api/books/protected/current-loans`;
                 const requestOptions = {
                     method: 'GET',
                     headers: {
@@ -64,7 +64,7 @@ export const Loans = () => {
     async function returnBook(bookId: number) {
         if (isAuthenticated && user?.email) {
             const apiAccessToken = await getAccessTokenSilently();
-            const url = `http://localhost:6060/api/books/protected/return?userEmail=${user?.email}&bookId=${bookId}`;
+            const url = `http://localhost:6060/api/books/protected/return?bookId=${bookId}`;
             const requestOptions = {
                 method: 'PUT',
                 headers: {
@@ -83,7 +83,7 @@ export const Loans = () => {
     async function renewLoan(bookId: number) {
         if (isAuthenticated && user?.email) {
             const apiAccessToken = await getAccessTokenSilently();
-            const url = `http://localhost:6060/api/books/protected/renew/loan?userEmail=${user?.email}&bookId=${bookId}`;
+            const url = `http://localhost:6060/api/books/protected/renew/loan?bookId=${bookId}`;
             const requestOptions = {
                 method: 'PUT',
                 headers: {

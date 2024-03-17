@@ -23,8 +23,8 @@ export const Messages = () => {
         const fetchUserMessages = async () => {
             if (isAuthenticated && user?.email) {
                 const apiAccessToken = await getAccessTokenSilently();
-                const baseUrl = `http://localhost:6060/api/messages/protected/find-by-user-email?userEmail=${user?.email}`;
-                const url = `${baseUrl}&page=${currentPage - 1}&size=${messagesPerPage}`;
+                const baseUrl = `http://localhost:6060/api/messages/protected/find-by-user-email`;
+                const url = `${baseUrl}?page=${currentPage - 1}&size=${messagesPerPage}`;
 
                 const requestOptions = {
                     method: 'GET',

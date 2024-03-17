@@ -13,7 +13,7 @@ export const PostNewMessage = () => {
     async function submitNewQuestion() {
         if (isAuthenticated && user?.email && title !== '' && question !== '') {
             const apiAccessToken = await getAccessTokenSilently();
-            const url = `http://localhost:6060/api/messages/protected/add?userEmail=${user.email}`;
+            const url = `http://localhost:6060/api/messages/protected/add`;
             const messageRequestModel: MessageModel = new MessageModel(title, question);
             const requestOptions = {
                 method: 'POST',

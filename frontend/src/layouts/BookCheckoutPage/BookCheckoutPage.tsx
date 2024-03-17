@@ -115,7 +115,7 @@ export const BookCheckoutPage = () => {
         const fetchUserReviews = async () => {
             if (isAuthenticated && user?.email) {
                 const apiAccessToken = await getAccessTokenSilently();
-                const url = `http://localhost:6060/api/reviews/protected/user/book?userEmail=${user?.email}&bookId=${bookId}`;
+                const url = `http://localhost:6060/api/reviews/protected/user/book?bookId=${bookId}`;
                 const requestOptions = {
                     method: 'GET',
                     headers: {
@@ -145,7 +145,7 @@ export const BookCheckoutPage = () => {
         const fetchUserCurrentLoansCount = async () => {
             if (isAuthenticated && user?.email) {
                 const apiAccessToken = await getAccessTokenSilently();
-                const url = `http://localhost:6060/api/books/protected/current-loans/count?userEmail=${user?.email}`;
+                const url = `http://localhost:6060/api/books/protected/current-loans/count`;
                 const requestOptions = {
                     method: 'GET',
                     headers: {
@@ -175,7 +175,7 @@ export const BookCheckoutPage = () => {
         const fetchUserCheckedOutBook = async () => {
             if (isAuthenticated && user?.email) {
                 const apiAccessToken = await getAccessTokenSilently();
-                const url = `http://localhost:6060/api/books/protected/is-checked-out/by-user?bookId=${bookId}&userEmail=${user?.email}`;
+                const url = `http://localhost:6060/api/books/protected/is-checked-out/by-user?bookId=${bookId}`;
                 const requestOptions = {
                     method: 'GET',
                     headers: {
@@ -220,7 +220,7 @@ export const BookCheckoutPage = () => {
 
     async function checkoutBook() {
         const apiAccessToken = await getAccessTokenSilently();
-        const url = `http://localhost:6060/api/books/protected/checkout?bookId=${book?.id}&userEmail=${user?.email}`;
+        const url = `http://localhost:6060/api/books/protected/checkout?bookId=${book?.id}`;
         const requestOptions = {
             method: 'PUT',
             headers: {
@@ -245,7 +245,7 @@ export const BookCheckoutPage = () => {
 
         const apiAccessToken = await getAccessTokenSilently();
         const reviewRequestModel = new ReviewRequestModel(starInput, bookId, reviewDescription);
-        const url = `http://localhost:6060/api/reviews/protected?userEmail=${user?.email}`;
+        const url = `http://localhost:6060/api/reviews/protected`;
         const requestOptions = {
             method: 'POST',
             headers: {

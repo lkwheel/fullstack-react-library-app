@@ -2,6 +2,13 @@
 
 application:
   client-origin-url: ${CLIENT_ORIGIN_URL}
+  auth0:
+      domain: ${OKTA_OAUTH_MGMT_DOMAIN}
+      client:
+        id: ${OKTA_OAUTH_MGMT_CLIENT_ID}
+        secret: ${OKTA_OAUTH_MGMT_CLIENT_SECRET}
+      audience: ${OKTA_OAUTH_MGMT_AUDIENCE}
+
 
 server:
   error:
@@ -20,7 +27,7 @@ spring:
       hibernate:
         dialect: org.hibernate.dialect.MySQL8Dialect
         hibernate.format_sql: true
-    show-sql: true
+    show-sql: false
 
   mvc:
     throw-exception-if-no-handler-found: true

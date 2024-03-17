@@ -1,8 +1,12 @@
 package com.wheelerkode.library.controllers;
 
+import com.wheelerkode.library.entity.LibraryUser;
 import com.wheelerkode.library.entity.Review;
 import com.wheelerkode.library.requestmodels.ReviewRequest;
 import com.wheelerkode.library.services.ReviewService;
+import com.wheelerkode.library.services.UserDataService;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
@@ -12,12 +16,12 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("api/reviews")
+@RequiredArgsConstructor
+@Log4j2
 public class ReviewController {
-    private final ReviewService reviewService;
 
-    public ReviewController(ReviewService reviewService) {
-        this.reviewService = reviewService;
-    }
+    private final UserDataService userDataService;
+    private final ReviewService reviewService;
 
     @GetMapping()
     public ResponseEntity<Page<Review>> getAllReviews(Pageable pageable) {
@@ -39,23 +43,44 @@ public class ReviewController {
     }
 
     @GetMapping("/find-by-user-email-and-book-id")
-    public ResponseEntity<Review> getByUserEmailAndBookId(@RequestParam("userEmail") String userEmail,
-                                                          @RequestParam("bookId") Long bookId) {
-        Optional<Review> byUserEmailAndBookId = reviewService.getByUserEmailAndBookId(userEmail, bookId);
+    public ResponseEntity<Review> getByUserEmailAndBookId(@RequestParam("bookId") Long bookId) {
+        ResponseEntity<?> userDataResponse = userDataService.getUserData();
+        if (!userDataResponse.getStatusCode().is2xxSuccessful()) {
+            log.warn("Problem getting user data");
+            return ResponseEntity.badRequest().build();
+        }
+        LibraryUser user = (LibraryUser) userDataResponse.getBody();
+        Optional<Review> byUserEmailAndBookId = reviewService.getByUserEmailAndBookId(user.getEmail(), bookId);
         return byUserEmailAndBookId.map(review -> ResponseEntity.ok().body(review))
                                    .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @PostMapping("/protected")
-    public ResponseEntity<Void> postReview(@RequestParam("userEmail") String userEmail,
-                                           @RequestBody ReviewRequest reviewRequest) throws Exception {
-        reviewService.postReview(userEmail, reviewRequest);
-        return ResponseEntity.noContent().build();
+    public ResponseEntity<Void> postReview(@RequestBody ReviewRequest reviewRequest) {
+        ResponseEntity<?> userDataResponse = userDataService.getUserData();
+        if (!userDataResponse.getStatusCode().is2xxSuccessful()) {
+            log.warn("Problem getting user data");
+            return ResponseEntity.badRequest().build();
+        }
+        LibraryUser user = (LibraryUser) userDataResponse.getBody();
+
+        try {
+            reviewService.postReview(user.getEmail(), reviewRequest);
+            return ResponseEntity.noContent().build();
+        } catch (Exception e) {
+            return ResponseEntity.internalServerError().build();
+        }
     }
 
     @GetMapping("/protected/user/book")
-    public ResponseEntity<Boolean> reviewBookByUser(@RequestParam("userEmail") String userEmail,
-                                                    @RequestParam("bookId") Long bookId) {
-        return ResponseEntity.ok().body(reviewService.userReviewListed(userEmail, bookId));
+    public ResponseEntity<Boolean> reviewBookByUser(@RequestParam("bookId") Long bookId) {
+        ResponseEntity<?> userDataResponse = userDataService.getUserData();
+        if (!userDataResponse.getStatusCode().is2xxSuccessful()) {
+            log.warn("Problem getting user data");
+            return ResponseEntity.badRequest().build();
+        }
+        LibraryUser user = (LibraryUser) userDataResponse.getBody();
+
+        return ResponseEntity.ok().body(reviewService.userReviewListed(user.getEmail(), bookId));
     }
 }
