@@ -6,10 +6,11 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;
+import java.util.UUID;
 
-public interface ReviewRepository extends JpaRepository<Review, Long> {
+public interface ReviewRepository extends JpaRepository<Review, UUID> {
 
-    Page<Review> findByBookId(Long bookId, Pageable pageable);
+    Page<Review> findByBookId(UUID bookId, Pageable pageable);
 
-    Optional<Review> findByUserEmailAndBookId(String userEmail, Long bookId);
+    Optional<Review> findByUserEmailAndBookId(String userEmail, UUID bookId);
 }

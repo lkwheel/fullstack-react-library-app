@@ -4,8 +4,11 @@ import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.JdbcTypeCode;
 
+import java.sql.Types;
 import java.util.Date;
+import java.util.UUID;
 
 @Entity
 @Table(name = "review")
@@ -14,9 +17,9 @@ import java.util.Date;
 public class Review {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
-    private Long id;
+    @GeneratedValue
+    @JdbcTypeCode(Types.VARCHAR)
+    private UUID id;
 
     @Column(name = "user_email")
     private String userEmail;
@@ -29,12 +32,12 @@ public class Review {
     private double rating;
 
     @Column(name = "book_id")
-    private Long bookId;
+    private UUID bookId;
 
     @Column(name = "review_description")
     private String reviewDescription;
 
-    public Review(String userEmail, Date date, double rating, Long bookId, String reviewDescription) {
+    public Review(String userEmail, Date date, double rating, UUID bookId, String reviewDescription) {
         this.userEmail = userEmail;
         this.date = date;
         this.rating = rating;

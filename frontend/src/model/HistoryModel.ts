@@ -1,26 +1,13 @@
 class HistoryModel {
-    id: number;
-    title: string;
-    author: string;
-    description: string;
-    category: string;
-    img: string;
-    userEmail: string;
-    checkoutDate: string;
-    returnedDate: string;
-
-    constructor(id: number, title: string, author: string, description: string, category: string,
-        img: string, userEmail: string, checkoutDate: string, returnedDate: string) {
-        this.id = id;
-        this.title = title;
-        this.author = author;
-        this.description = description;
-        this.category = category;
-        this.img = img;
-        this.userEmail = userEmail;
-        this.checkoutDate = checkoutDate;
-        this.returnedDate = returnedDate;
-    }
+    constructor(public id: string,
+        public title: string,
+        public author: string,
+        public description: string,
+        public category: string,
+        public img: string,
+        public userEmail: string,
+        public checkoutDate: string,
+        public returnedDate: string) { }
 }
 
 export default HistoryModel;

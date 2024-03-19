@@ -104,7 +104,7 @@ export const AdminMessages = () => {
 
     const paginate = (pageNumber: number) => setCurrentPage(pageNumber);
 
-    async function submitResponseToQuestion(id: number, adminResponse: string) {
+    async function submitResponseToQuestion(id: string, adminResponse: string) {
         if (isAuthenticated && user?.email && isAdmin && id !== null && adminResponse !== '') {
             const url = `http://localhost:6060/api/messages/protected/admin/message`;
             const apiAccessToken = await getAccessTokenSilently();

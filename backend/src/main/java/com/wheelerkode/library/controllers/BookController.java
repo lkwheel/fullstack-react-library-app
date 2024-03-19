@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("api/books")
@@ -43,8 +44,8 @@ public class BookController {
     }
 
     @GetMapping("/{bookId}")
-    public ResponseEntity<Book> getBook(@PathVariable Long bookId) {
-        Optional<Book> bookById = bookService.getBookById(bookId);
+    public ResponseEntity<Book> getBook(@PathVariable String bookId) {
+        Optional<Book> bookById = bookService.getBookById(UUID.fromString(bookId));
         return bookById.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
@@ -62,7 +63,7 @@ public class BookController {
     }
 
     @PutMapping("/protected/checkout")
-    public ResponseEntity<Book> checkoutBook(@RequestParam("bookId") Long bookId) {
+    public ResponseEntity<Book> checkoutBook(@RequestParam("bookId") String bookId) {
         ResponseEntity<?> userDataResponse = userDataService.getUserData();
         if (!userDataResponse.getStatusCode().is2xxSuccessful()) {
             log.warn("Problem getting user data");
@@ -70,7 +71,7 @@ public class BookController {
         }
         LibraryUser user = (LibraryUser) userDataResponse.getBody();
         try {
-            Book checkedOutBook = bookService.checkoutBook(user.getEmail(), bookId);
+            Book checkedOutBook = bookService.checkoutBook(user.getEmail(), UUID.fromString(bookId));
             return ResponseEntity.ok().body(checkedOutBook);
         } catch (Exception e) {
             return ResponseEntity.internalServerError().build();
@@ -90,19 +91,19 @@ public class BookController {
     }
 
     @GetMapping("/protected/is-checked-out/by-user")
-    public ResponseEntity<Boolean> isBookCheckedOutByUser(@RequestParam("bookId") Long bookId) {
+    public ResponseEntity<Boolean> isBookCheckedOutByUser(@RequestParam("bookId") String bookId) {
         ResponseEntity<?> userDataResponse = userDataService.getUserData();
         if (!userDataResponse.getStatusCode().is2xxSuccessful()) {
             log.warn("Problem getting user data");
             return ResponseEntity.badRequest().build();
         }
         LibraryUser user = (LibraryUser) userDataResponse.getBody();
-        Boolean isCheckedOut = bookService.checkoutBookByUser(user.getEmail(), bookId);
+        Boolean isCheckedOut = bookService.checkoutBookByUser(user.getEmail(), UUID.fromString(bookId));
         return ResponseEntity.ok().body(isCheckedOut);
     }
 
     @PutMapping("/protected/return")
-    public ResponseEntity<Void> returnBook(@RequestParam("bookId") Long bookId) {
+    public ResponseEntity<Void> returnBook(@RequestParam("bookId") String bookId) {
         ResponseEntity<?> userDataResponse = userDataService.getUserData();
         if (!userDataResponse.getStatusCode().is2xxSuccessful()) {
             log.warn("Problem getting user data");
@@ -110,7 +111,7 @@ public class BookController {
         }
         LibraryUser user = (LibraryUser) userDataResponse.getBody();
         try {
-            bookService.returnBook(user.getEmail(), bookId);
+            bookService.returnBook(user.getEmail(), UUID.fromString(bookId));
             return ResponseEntity.noContent().build();
         } catch (Exception e) {
             return ResponseEntity.internalServerError().build();
@@ -118,7 +119,7 @@ public class BookController {
     }
 
     @PutMapping("/protected/renew-loan")
-    public ResponseEntity<Void> renewBookLoan(@RequestParam("bookId") Long bookId) {
+    public ResponseEntity<Void> renewBookLoan(@RequestParam("bookId") String bookId) {
         ResponseEntity<?> userDataResponse = userDataService.getUserData();
         if (!userDataResponse.getStatusCode().is2xxSuccessful()) {
             log.warn("Problem getting user data");
@@ -126,7 +127,7 @@ public class BookController {
         }
         LibraryUser user = (LibraryUser) userDataResponse.getBody();
         try {
-            bookService.renewLoan(user.getEmail(), bookId);
+            bookService.renewLoan(user.getEmail(), UUID.fromString(bookId));
             return ResponseEntity.noContent().build();
         } catch (Exception e) {
             return ResponseEntity.internalServerError().build();

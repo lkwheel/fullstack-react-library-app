@@ -13,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("api/reviews")
@@ -30,27 +31,28 @@ public class ReviewController {
     }
 
     @GetMapping("/{reviewId}")
-    public ResponseEntity<Review> getReview(@PathVariable Long reviewId, Pageable pageable) {
-        Optional<Review> reviewById = reviewService.getReviewById(reviewId);
+    public ResponseEntity<Review> getReview(@PathVariable String reviewId, Pageable pageable) {
+        Optional<Review> reviewById = reviewService.getReviewById(UUID.fromString(reviewId));
         return reviewById.map(review -> ResponseEntity.ok().body(review))
                          .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @GetMapping("/find-by-book-id")
-    public ResponseEntity<Page<Review>> getBookById(@RequestParam("bookId") Long bookId, Pageable pageable) {
-        Page<Review> reviews = reviewService.getBookById(bookId, pageable);
+    public ResponseEntity<Page<Review>> getBookById(@RequestParam("bookId") String bookId, Pageable pageable) {
+        Page<Review> reviews = reviewService.getBookById(UUID.fromString(bookId), pageable);
         return ResponseEntity.ok().body(reviews);
     }
 
     @GetMapping("/find-by-user-email-and-book-id")
-    public ResponseEntity<Review> getByUserEmailAndBookId(@RequestParam("bookId") Long bookId) {
+    public ResponseEntity<Review> getByUserEmailAndBookId(@RequestParam("bookId") String bookId) {
         ResponseEntity<?> userDataResponse = userDataService.getUserData();
         if (!userDataResponse.getStatusCode().is2xxSuccessful()) {
             log.warn("Problem getting user data");
             return ResponseEntity.badRequest().build();
         }
         LibraryUser user = (LibraryUser) userDataResponse.getBody();
-        Optional<Review> byUserEmailAndBookId = reviewService.getByUserEmailAndBookId(user.getEmail(), bookId);
+        Optional<Review> byUserEmailAndBookId = reviewService.getByUserEmailAndBookId(user.getEmail(),
+                                                                                      UUID.fromString(bookId));
         return byUserEmailAndBookId.map(review -> ResponseEntity.ok().body(review))
                                    .orElseGet(() -> ResponseEntity.notFound().build());
     }
@@ -73,7 +75,7 @@ public class ReviewController {
     }
 
     @GetMapping("/protected/user/book")
-    public ResponseEntity<Boolean> reviewBookByUser(@RequestParam("bookId") Long bookId) {
+    public ResponseEntity<Boolean> reviewBookByUser(@RequestParam("bookId") UUID bookId) {
         ResponseEntity<?> userDataResponse = userDataService.getUserData();
         if (!userDataResponse.getStatusCode().is2xxSuccessful()) {
             log.warn("Problem getting user data");

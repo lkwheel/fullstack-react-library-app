@@ -238,7 +238,7 @@ export const BookCheckoutPage = () => {
 
     async function submitReview(starInput: number, reviewDescription: string) {
 
-        let bookId: number = 0;
+        let bookId: string = '';
         if (book?.id) {
             bookId = book.id;
         }

@@ -27,7 +27,9 @@ spring:
       hibernate:
         dialect: org.hibernate.dialect.MySQL8Dialect
         hibernate.format_sql: true
+        use-new-id-generator-mappings: false
     show-sql: false
+    open-in-view: false
 
   mvc:
     throw-exception-if-no-handler-found: true

@@ -22,7 +22,8 @@ public class SecurityConfig {
                     "/api/reviews/protected/**",
                     "/api/histories/protected/**",
                     "/api/messages/protected/**",
-                    "/api/user/protected/**"
+                    "/api/user/protected/**",
+                    "/api/admin/protected/**"
                 ).authenticated().anyRequest().permitAll())
                 .cors(Customizer.withDefaults())
                 .oauth2ResourceServer(oauth2 -> oauth2.jwt(Customizer.withDefaults())

@@ -27,7 +27,7 @@ public class BookService {
     private final CheckoutRepository checkoutRepository;
     private final HistoryRepository historyRepository;
 
-    public Book checkoutBook(String userEmail, Long bookId) throws Exception {
+    public Book checkoutBook(String userEmail, UUID bookId) throws Exception {
         Optional<Book> book = bookRepository.findById(bookId);
         Checkout validateBookCheckout = checkoutRepository.findByUserEmailAndBookId(userEmail, bookId);
 
@@ -45,7 +45,7 @@ public class BookService {
         return book.get();
     }
 
-    public Boolean checkoutBookByUser(String userEmail, Long bookId) {
+    public Boolean checkoutBookByUser(String userEmail, UUID bookId) {
         Checkout validateCheckout = checkoutRepository.findByUserEmailAndBookId(userEmail, bookId);
         return validateCheckout != null;
     }
@@ -58,7 +58,7 @@ public class BookService {
         return bookRepository.findAll(pageable);
     }
 
-    public Optional<Book> getBookById(Long bookId) {
+    public Optional<Book> getBookById(UUID bookId) {
         return bookRepository.findById(bookId);
     }
 
@@ -73,7 +73,7 @@ public class BookService {
     public List<ShelfCurrentLoansResponse> currentLoans(String userEmail) throws Exception {
         List<ShelfCurrentLoansResponse> shelfCurrentLoansResponses = new ArrayList<>();
         List<Checkout> checkoutList = checkoutRepository.findBooksByUserEmail(userEmail);
-        List<Long> bookIdList = new ArrayList<>();
+        List<UUID> bookIdList = new ArrayList<>();
 
         for (Checkout checkout : checkoutList) {
             bookIdList.add(checkout.getBookId());
@@ -103,7 +103,7 @@ public class BookService {
         return shelfCurrentLoansResponses;
     }
 
-    public void returnBook(String userEmail, Long bookId) throws Exception {
+    public void returnBook(String userEmail, UUID bookId) throws Exception {
         Optional<Book> book = bookRepository.findById(bookId);
         Checkout validateCheckout = checkoutRepository.findByUserEmailAndBookId(userEmail, bookId);
         if (book.isEmpty() || validateCheckout == null) {
@@ -127,7 +127,7 @@ public class BookService {
         historyRepository.save(history);
     }
 
-    public void renewLoan(String userEmail, Long bookId) throws Exception {
+    public void renewLoan(String userEmail, UUID bookId) throws Exception {
         Checkout validateCheckout = checkoutRepository.findByUserEmailAndBookId(userEmail, bookId);
 
         if (validateCheckout == null) {

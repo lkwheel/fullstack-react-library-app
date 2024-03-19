@@ -1,16 +1,13 @@
 class MessageModel {
-    title: string;
-    question: string;
-    id?: number;
-    userEmail?: string;
-    adminEmail?: string;
-    response?: string;
-    closed?: boolean;
-
-    constructor(title: string, question: string) {
-        this.title = title;
-        this.question = question;
-    }
+    constructor(
+        public title: string,
+        public question: string,
+        public id?: string,
+        public userEmail?: string,
+        public adminEmail?: string,
+        public response?: string,
+        public closed?: boolean
+    ) { }
 }
 
 export default MessageModel;

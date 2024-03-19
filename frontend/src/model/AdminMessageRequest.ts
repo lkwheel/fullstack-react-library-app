@@ -1,6 +1,5 @@
 class AdminMessageRequest {
-    constructor(public id: number, public response: string) {
-    }
+    constructor(public id: string, public response: string) { }
 
 }
 

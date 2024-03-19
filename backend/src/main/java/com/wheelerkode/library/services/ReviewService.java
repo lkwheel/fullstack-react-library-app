@@ -13,6 +13,7 @@ import java.time.Instant;
 import java.util.Date;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 @Transactional
@@ -25,20 +26,21 @@ public class ReviewService {
         return reviewRepository.findAll(pageable);
     }
 
-    public Page<Review> getBookById(Long bookId, Pageable pageable) {
+    public Page<Review> getBookById(UUID bookId, Pageable pageable) {
         return reviewRepository.findByBookId(bookId, pageable);
     }
 
-    public Optional<Review> getReviewById(Long reviewId) {
+    public Optional<Review> getReviewById(UUID reviewId) {
         return reviewRepository.findById(reviewId);
     }
 
-    public Optional<Review> getByUserEmailAndBookId(String userEmail, Long bookId) {
+    public Optional<Review> getByUserEmailAndBookId(String userEmail, UUID bookId) {
         return reviewRepository.findByUserEmailAndBookId(userEmail, bookId);
     }
 
     public void postReview(String userEmail, ReviewRequest reviewRequest) throws Exception {
-        Optional<Review> validateReview = reviewRepository.findByUserEmailAndBookId(userEmail, reviewRequest.getBookId());
+        Optional<Review> validateReview = reviewRepository.findByUserEmailAndBookId(userEmail,
+                                                                                    reviewRequest.getBookId());
         if (validateReview.isPresent()) {
             throw new Exception("Review already created");
         }
@@ -56,7 +58,7 @@ public class ReviewService {
         reviewRepository.save(review);
     }
 
-    public Boolean userReviewListed(String userEmail, Long bookId) {
+    public Boolean userReviewListed(String userEmail, UUID bookId) {
         Optional<Review> validateReview = reviewRepository.findByUserEmailAndBookId(userEmail, bookId);
         return validateReview.isPresent();
     }
