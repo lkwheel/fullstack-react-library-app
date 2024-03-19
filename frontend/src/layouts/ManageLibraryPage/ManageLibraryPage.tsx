@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import { Redirect } from 'react-router-dom';
 import { SpinnerLoading } from '../Utils/SpinnerLoading';
 import { AdminMessages } from './components/AdminMessages';
+import { AddNewBook } from './components/AddNewBook';
 
 export const ManageLibraryPage = () => {
     const { user, isAuthenticated, getAccessTokenSilently } = useAuth0();
@@ -131,7 +132,7 @@ export const ManageLibraryPage = () => {
                         id='nav-add-book'
                         role='tabpanel'
                         aria-labelledby='nav-add-book-tab'>
-                        Add new book
+                        <AddNewBook />
                     </div>
                     <div className='tab-pane fade'
                         id='nav-quantity'
