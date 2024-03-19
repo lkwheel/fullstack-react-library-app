@@ -37,6 +37,11 @@ spring:
     resources:
       add-mappings: false
 
+logging:
+  level:
+    root: INFO
+    com.wheelerkode.library: TRACE
+
 okta:
   oauth2:
     issuer: ${OKTA_OAUTH2_ISSUER}

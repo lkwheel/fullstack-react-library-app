@@ -76,7 +76,8 @@ export const SearchBooksPage = () => {
         if (search === '') {
             setSearchUrl('');
         } else {
-            setSearchUrl(`/find-by-title-containing?title=${search}&page=<pageNumber>&size=${booksPerPage}`);
+            const encodedSearch = encodeURIComponent(search);
+            setSearchUrl(`/find-by-title-containing?title=${encodedSearch}&page=<pageNumber>&size=${booksPerPage}`);
         }
         setCategorySelection('Book category');
     };
