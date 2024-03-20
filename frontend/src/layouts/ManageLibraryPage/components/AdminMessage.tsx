@@ -18,7 +18,7 @@ export const AdminMessage: React.FC<{ message: MessageModel, submitResponseToQue
     return (
         <div key={props.message.id}>
             <div className='card mt-2 shadow p-3 bg-body rounded'>
-                <h5>Case #{props.message.id}: {props.message.title}</h5>
+                <h5>Case id: <span className='badge bg-secondary'>{props.message.id}</span>: {props.message.title}</h5>
                 <h6>{props.message.userEmail}</h6>
                 <p>{props.message.question}</p>
                 <hr />

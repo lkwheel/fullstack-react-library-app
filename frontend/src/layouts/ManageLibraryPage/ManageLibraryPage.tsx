@@ -4,6 +4,7 @@ import { Redirect } from 'react-router-dom';
 import { SpinnerLoading } from '../Utils/SpinnerLoading';
 import { AdminMessages } from './components/AdminMessages';
 import { AddNewBook } from './components/AddNewBook';
+import { ChangeQuantityOfBooks } from './components/ChangeQuantityOfBooks';
 
 export const ManageLibraryPage = () => {
     const { user, isAuthenticated, getAccessTokenSilently } = useAuth0();
@@ -138,7 +139,7 @@ export const ManageLibraryPage = () => {
                         id='nav-quantity'
                         role='tabpanel'
                         aria-labelledby='nav-quantity-tab'>
-                        {changeQuantityOfBooksClick ? <>Change Quantity</> : <></>}
+                        {changeQuantityOfBooksClick ? <ChangeQuantityOfBooks /> : <></>}
                     </div>
                     <div className='tab-pane fade'
                         id='nav-messages'

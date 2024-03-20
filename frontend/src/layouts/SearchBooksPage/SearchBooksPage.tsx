@@ -55,7 +55,7 @@ export const SearchBooksPage = () => {
             setHttpError(error.message);
         })
         window.scrollTo(0, 0);
-    }, [currentPage, searchUrl]);
+    }, [booksPerPage, currentPage, searchUrl]);
 
     if (isLoading) {
         return (

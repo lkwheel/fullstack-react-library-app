@@ -49,7 +49,7 @@ export const HistoryPage = () => {
             setIsLoadingHistory(false);
             setHttpError(error.message);
         });
-    }, [getAccessTokenSilently, currentPage]);
+    }, [getAccessTokenSilently, currentPage, isAuthenticated, user]);
 
     if (isLoadingHistory) {
         return (

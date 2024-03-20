@@ -45,7 +45,7 @@ export const Loans = () => {
             setHttpError(error.message);
         });
         window.scrollTo(0, 0);
-    }, [getAccessTokenSilently, checkout]);
+    }, [getAccessTokenSilently, checkout, isAuthenticated, user]);
 
     if (isLoadingCurrentLoans) {
         return (

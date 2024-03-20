@@ -49,7 +49,7 @@ export const Messages = () => {
             setHttpError(error.messages);
         });
         window.scrollTo(0, 0);
-    }, [getAccessTokenSilently, currentPage]);
+    }, [getAccessTokenSilently, currentPage, isAuthenticated, messagesPerPage]);
 
     if (isLoadingMessages) {
         return (
@@ -75,7 +75,7 @@ export const Messages = () => {
                     {messages.map(message => (
                         <div key={message.id}>
                             <div className='card mt-3 shadow p-3 bg-body rounded'>
-                                <h5>Case #{message.id}: {message.title}</h5>
+                                <h5>Case id: <span className='badge bg-secondary'>{message.id}</span>: {message.title}</h5>
                                 <h6>{message.question}</h6>
                                 <hr />
                                 <div>
