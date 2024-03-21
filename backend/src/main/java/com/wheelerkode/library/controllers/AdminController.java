@@ -1,6 +1,5 @@
 package com.wheelerkode.library.controllers;
 
-import com.wheelerkode.library.models.NotFoundException;
 import com.wheelerkode.library.requestmodels.AddBookRequest;
 import com.wheelerkode.library.services.AdminService;
 import com.wheelerkode.library.services.UserDataService;
@@ -28,11 +27,7 @@ public class AdminController {
             return ResponseEntity.badRequest().build();
         }
 
-        try {
-            adminService.increaseBookQuantity(UUID.fromString(bookId));
-        } catch (NotFoundException e) {
-            return ResponseEntity.notFound().build();
-        }
+        adminService.increaseBookQuantity(UUID.fromString(bookId));
         return ResponseEntity.noContent().build();
     }
 
@@ -44,11 +39,7 @@ public class AdminController {
             return ResponseEntity.badRequest().build();
         }
 
-        try {
-            adminService.decreaseBookQuantity(UUID.fromString(bookId));
-        } catch (NotFoundException e) {
-            return ResponseEntity.notFound().build();
-        }
+        adminService.decreaseBookQuantity(UUID.fromString(bookId));
         return ResponseEntity.noContent().build();
     }
 
@@ -66,18 +57,14 @@ public class AdminController {
 
 
     @DeleteMapping("/protected/delete/book")
-    public ResponseEntity<?> deletedBook(@RequestParam String bookId) {
+    public ResponseEntity<?> deleteBook(@RequestParam String bookId) {
         ResponseEntity<?> adminResponse = userDataService.checkAdminPermission();
         if (!adminResponse.getStatusCode().is2xxSuccessful()) {
             log.warn("Problem getting admin permission state");
             return ResponseEntity.badRequest().build();
         }
 
-        try {
-            adminService.deleteBook(UUID.fromString(bookId));
-        } catch (NotFoundException e) {
-            return ResponseEntity.notFound().build();
-        }
+        adminService.deleteBook(UUID.fromString(bookId));
         return ResponseEntity.noContent().build();
     }
 }

@@ -1,6 +1,7 @@
 package com.wheelerkode.library.dao;
 
 import com.wheelerkode.library.entity.Checkout;
+import jakarta.transaction.Transactional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -16,6 +17,7 @@ public interface CheckoutRepository extends JpaRepository<Checkout, UUID> {
     List<Checkout> findBooksByUserEmail(String userEmail);
 
     @Modifying
-    @Query("delete from Checkout where book_id in :book_id")
-    void deleteAllByBookId(@Param("book_id") UUID bookId);
+    @Transactional
+    @Query("DELETE FROM Checkout c WHERE c.bookId = :bookId")
+    void deleteAllByBookId(@Param("bookId") UUID bookId);
 }

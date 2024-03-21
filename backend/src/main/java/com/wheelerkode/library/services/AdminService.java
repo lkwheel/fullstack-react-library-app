@@ -50,6 +50,7 @@ public class AdminService {
         book.setTitle(addBookRequest.getTitle());
         book.setAuthor(addBookRequest.getAuthor());
         book.setDescription(addBookRequest.getDescription());
+        book.setCopies(addBookRequest.getCopies());
         book.setCopiesAvailable(addBookRequest.getCopies());
         book.setCategory(addBookRequest.getCategory());
         book.setImg(addBookRequest.getImg());
