@@ -2,9 +2,53 @@ import { NavLink } from 'react-router-dom';
 import { LoginButton } from '../../Auth/LoginButton';
 import { useAuth0 } from '@auth0/auth0-react';
 import { LogoutButton } from '../../Auth/LogoutButton';
+import { useEffect, useState } from 'react';
+import { SpinnerLoading } from '../Utils/SpinnerLoading';
 
 export const Navbar = () => {
-    const { isAuthenticated } = useAuth0();
+    const { user, isAuthenticated, getAccessTokenSilently } = useAuth0();
+
+    const [isAdmin, setIsAdmin] = useState(false);
+    const [isLoading, setIsLoading] = useState<boolean>(true);
+
+    useEffect(() => {
+        const fetchCheckAdminUseRole = async () => {
+            if (isAuthenticated && user?.email) {
+                try {
+                    const apiAccessToken = await getAccessTokenSilently();
+                    const url = `http://localhost:6060/api/user/protected/permissions`;
+                    const requestOptions = {
+                        method: 'GET',
+                        headers: {
+                            'content-type': 'application/json',
+                            'Authorization': `Bearer ${apiAccessToken}`,
+                        }
+                    };
+                    const response = await fetch(url, requestOptions);
+                    if (!response.ok) {
+                        throw new Error('Something went wrong getting user permissions');
+                    }
+                    setIsAdmin(true);
+                    setIsLoading(false);
+                } catch (error: any) {
+                    setIsAdmin(false);
+                    setIsLoading(false);
+                }
+            } else {
+                setIsAdmin(false);
+                setIsLoading(false);
+            }
+        };
+
+        fetchCheckAdminUseRole();
+    }, [getAccessTokenSilently, isAuthenticated, user, isAdmin]);
+
+    if (isLoading) {
+        return (
+            <SpinnerLoading />
+        );
+    }
+
     return (
         <nav className='navbar navbar-expand-lg navbar-dark main-color py-3'>
             <div className='container-fluid'>
@@ -25,9 +69,14 @@ export const Navbar = () => {
                         <li className='nav-item'>
                             <NavLink className='nav-link' to='/search'>Search Books</NavLink>
                         </li>
-                        {isAuthenticated && (
+                        {isAuthenticated && user && (
                             <li className='nav-item'>
                                 <NavLink className='nav-link' to='/shelf'>Shelf</NavLink>
+                            </li>
+                        )}
+                        {isAuthenticated && isAdmin && (
+                            <li className='nav-item'>
+                                <NavLink className='nav-link' to='/admin'>Admin</NavLink>
                             </li>
                         )}
                     </ul>
