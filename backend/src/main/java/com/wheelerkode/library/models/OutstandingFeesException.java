@@ -5,20 +5,20 @@ import lombok.NoArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
-@ResponseStatus(value = HttpStatus.CONFLICT)
+@ResponseStatus(value = HttpStatus.NOT_ACCEPTABLE)
 @Getter
 @NoArgsConstructor
-public class ProcessingException extends RuntimeException {
+public class OutstandingFeesException extends RuntimeException {
 
-    public ProcessingException(String message) {
+    public OutstandingFeesException(String message) {
         super(message);
     }
 
-    public ProcessingException(String message, Throwable cause) {
+    public OutstandingFeesException(String message, Throwable cause) {
         super(message, cause);
     }
 
-    public ProcessingException(Throwable cause) {
+    public OutstandingFeesException(Throwable cause) {
         super(cause);
     }
 }

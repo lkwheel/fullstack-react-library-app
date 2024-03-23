@@ -52,4 +52,8 @@ okta:
   oauth2:
     issuer: ${OKTA_OAUTH2_ISSUER}
     audience: ${OKTA_OAUTH2_AUDIENCE}
+
+stripe:
+  key:
+    secret: sk_test_51OxWyZ2LXs8feKjltNBvmuKlkAXQIVzq1zzvtdqk2zVU0uFMYrObJjsSwHOHaDoB56dHvTxYi1sBFogZAp5vD3tu00VAobdRPN
 ...
