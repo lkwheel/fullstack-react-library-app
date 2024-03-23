@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import MessageModel from '../../../model/MessageModel';
+import MessageModel from '../../../models/MessageModel';
 
 export const AdminMessage: React.FC<{ message: MessageModel, submitResponseToQuestion: any }> = (props, key) => {
 

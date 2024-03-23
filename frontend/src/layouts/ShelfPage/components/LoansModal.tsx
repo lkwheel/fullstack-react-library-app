@@ -1,4 +1,4 @@
-import ShelfCurrentLoans from '../../../model/ShelfCurrentLoans';
+import ShelfCurrentLoans from '../../../models/ShelfCurrentLoans';
 
 export const LoansModal: React.FC<{
     shelfCurrentLoan: ShelfCurrentLoans,

@@ -1,12 +1,12 @@
 import { useEffect, useState } from 'react';
 import { useAuth0 } from '@auth0/auth0-react';
-import BookModel from '../../model/BookModel';
+import BookModel from '../../models/BookModel';
 import { SpinnerLoading } from '../Utils/SpinnerLoading';
 import { StarsReview } from '../Utils/StarsReview';
 import { CheckAndReviewBox } from './CheckAndReviewBox';
-import ReviewModel from '../../model/ReviewModel';
+import ReviewModel from '../../models/ReviewModel';
 import { LatestReviews } from './LatestReviews';
-import ReviewRequestModel from '../../model/ReviewRequestModel';
+import ReviewRequestModel from '../../models/ReviewRequestModel';
 
 export const BookCheckoutPage = () => {
     const apiUrl = process.env.REACT_APP_API_URL;
@@ -36,7 +36,7 @@ export const BookCheckoutPage = () => {
 
     useEffect(() => {
         const fetchBook = async () => {
-            const baseUrl = `${apiUrl}/api/books` || 'https://localhost:8088/api/books';
+            const baseUrl = `${apiUrl}/books`;
             let url = `${baseUrl}`;
 
             if (bookId) {
@@ -140,7 +140,7 @@ export const BookCheckoutPage = () => {
             setIsLoadingUserReview(false);
             setHttpError(error.message);
         });
-    }, [apiUrl, bookId, isReviewLeft, getAccessTokenSilently]);
+    }, [apiUrl, bookId, isAuthenticated, isReviewLeft, getAccessTokenSilently, user]);
 
     useEffect(() => {
         const fetchUserCurrentLoansCount = async () => {
@@ -170,7 +170,7 @@ export const BookCheckoutPage = () => {
             setIsLoadingCurrentStateCount(false);
             setHttpError(error.message);
         });
-    }, [apiUrl, bookId, getAccessTokenSilently, isCheckedOut]);
+    }, [apiUrl, getAccessTokenSilently, isAuthenticated, isCheckedOut, user]);
 
     useEffect(() => {
         const fetchUserCheckedOutBook = async () => {
@@ -199,7 +199,7 @@ export const BookCheckoutPage = () => {
             setIsLoadingBookCheckedOut(false);
             setHttpError(error.message);
         });
-    }, [apiUrl, bookId, getAccessTokenSilently]);
+    }, [apiUrl, bookId, getAccessTokenSilently, isAuthenticated, user]);
 
     if (isLoading ||
         isLoadingReview ||

@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import BookModel from '../../model/BookModel';
+import BookModel from '../../models/BookModel';
 import { LeaveAReview } from '../Utils/LeaveAReview';
 
 export const CheckAndReviewBox: React.FC<{

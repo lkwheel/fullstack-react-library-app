@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import ReviewModel from '../../../model/ReviewModel'
+import ReviewModel from '../../../models/ReviewModel'
 import { SpinnerLoading } from '../../Utils/SpinnerLoading';
 import { Review } from '../../Utils/Review';
 import { Pagination } from '../../Utils/Pagination';

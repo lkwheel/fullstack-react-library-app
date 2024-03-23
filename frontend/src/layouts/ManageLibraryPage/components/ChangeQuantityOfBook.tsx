@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import BookModel from '../../../model/BookModel';
+import BookModel from '../../../models/BookModel';
 import { useAuth0 } from '@auth0/auth0-react';
 
 export const ChangeQuantityOfBook: React.FC<{ book: BookModel, deleteBook: any }> = (props, key) => {

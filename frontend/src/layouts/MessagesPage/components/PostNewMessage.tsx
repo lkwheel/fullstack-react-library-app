@@ -1,6 +1,6 @@
 import { useAuth0 } from '@auth0/auth0-react';
 import { useState } from 'react';
-import MessageModel from '../../../model/MessageModel';
+import MessageModel from '../../../models/MessageModel';
 
 export const PostNewMessage = () => {
 

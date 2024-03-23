@@ -1,6 +1,6 @@
 import { useAuth0 } from '@auth0/auth0-react';
 import { useState } from 'react';
-import AddBookRequest from '../../../model/AddBookRequest';
+import AddBookRequest from '../../../models/AddBookRequest';
 
 export const AddNewBook = () => {
 

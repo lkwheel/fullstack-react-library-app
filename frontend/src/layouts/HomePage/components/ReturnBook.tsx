@@ -1,5 +1,5 @@
 import React from 'react';
-import BookModel from '../../../model/BookModel';
+import BookModel from '../../../models/BookModel';
 import { Link } from 'react-router-dom';
 
 export const ReturnBook: React.FC<{ book: BookModel }> = (props) => {

@@ -1,7 +1,7 @@
 import { useAuth0 } from '@auth0/auth0-react';
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import ShelfCurrentLoans from '../../../model/ShelfCurrentLoans';
+import ShelfCurrentLoans from '../../../models/ShelfCurrentLoans';
 import { SpinnerLoading } from '../../Utils/SpinnerLoading';
 import { LoansModal } from './LoansModal';
 

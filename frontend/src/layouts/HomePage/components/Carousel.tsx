@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import BookModel from '../../../model/BookModel';
+import BookModel from '../../../models/BookModel';
 import { SpinnerLoading } from '../../Utils/SpinnerLoading';
 import { ReturnBook } from './ReturnBook';
 import { useEffect, useState } from 'react';

@@ -1,6 +1,6 @@
 import { useAuth0 } from '@auth0/auth0-react';
 import { useEffect, useState } from 'react';
-import HistoryModel from '../../../model/HistoryModel';
+import HistoryModel from '../../../models/HistoryModel';
 import { SpinnerLoading } from '../../Utils/SpinnerLoading';
 import { Link } from 'react-router-dom';
 import { Pagination } from '../../Utils/Pagination';

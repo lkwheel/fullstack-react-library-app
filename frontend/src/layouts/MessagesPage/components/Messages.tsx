@@ -1,6 +1,6 @@
 import { useAuth0 } from '@auth0/auth0-react';
 import { useEffect, useState } from 'react';
-import MessageModel from '../../../model/MessageModel';
+import MessageModel from '../../../models/MessageModel';
 import { SpinnerLoading } from '../../Utils/SpinnerLoading';
 import { Pagination } from '../../Utils/Pagination';
 
