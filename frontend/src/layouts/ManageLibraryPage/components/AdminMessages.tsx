@@ -7,6 +7,8 @@ import { AdminMessage } from './AdminMessage';
 import AdminMessageRequest from '../../../model/AdminMessageRequest';
 
 export const AdminMessages = () => {
+
+    const apiUrl = process.env.REACT_APP_API_URL;
     const { user, isAuthenticated, getAccessTokenSilently } = useAuth0();
 
     const [isAdmin, setIsAdmin] = useState(false);
@@ -28,7 +30,7 @@ export const AdminMessages = () => {
             if (isAuthenticated && user?.email) {
                 try {
                     const apiAccessToken = await getAccessTokenSilently();
-                    const url = `http://localhost:6060/api/user/protected/permissions`;
+                    const url = `${apiUrl}/user/protected/permissions`;
                     const requestOptions = {
                         method: 'GET',
                         headers: {
@@ -54,13 +56,13 @@ export const AdminMessages = () => {
         };
 
         fetchCheckAdminUseRole();
-    }, [getAccessTokenSilently, isAuthenticated, user, isAdmin]);
+    }, [apiUrl, getAccessTokenSilently, isAuthenticated, user, isAdmin]);
 
     useEffect(() => {
         const fetchMessages = async () => {
             if (isAuthenticated && user?.email) {
                 const apiAccessToken = await getAccessTokenSilently();
-                const baseUrl = `http://localhost:6060/api/messages/protected/find-by-closed?closed=false`;
+                const baseUrl = `${apiUrl}/messages/protected/find-by-closed?closed=false`;
                 const url = `${baseUrl}&page=${currentPage - 1}&size=5`;
 
                 const requestOptions = {
@@ -86,7 +88,7 @@ export const AdminMessages = () => {
             setIsLoading(false);
             setHttpError(error.message);
         });
-    }, [getAccessTokenSilently, isAuthenticated, user, currentPage, btnSubmit]);
+    }, [apiUrl, getAccessTokenSilently, isAuthenticated, user, currentPage, btnSubmit]);
 
     if (isLoading) {
         return (
@@ -106,7 +108,7 @@ export const AdminMessages = () => {
 
     async function submitResponseToQuestion(id: string, adminResponse: string) {
         if (isAuthenticated && user?.email && isAdmin && id !== null && adminResponse !== '') {
-            const url = `http://localhost:6060/api/messages/protected/admin/message`;
+            const url = `${apiUrl}/messages/protected/admin/message`;
             const apiAccessToken = await getAccessTokenSilently();
             const messageAdminRequestModel: AdminMessageRequest = new AdminMessageRequest(id, adminResponse);
             const requestOptions = {

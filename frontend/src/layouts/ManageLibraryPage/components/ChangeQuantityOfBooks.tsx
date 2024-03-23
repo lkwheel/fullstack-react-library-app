@@ -6,6 +6,7 @@ import { ChangeQuantityOfBook } from "./ChangeQuantityOfBook";
 
 export const ChangeQuantityOfBooks = () => {
 
+    const apiUrl = process.env.REACT_APP_API_URL;
     const [books, setBooks] = useState<BookModel[]>([]);
     const [isLoading, setIsLoading] = useState<boolean>(true);
     const [httpError, setHttpError] = useState(null);
@@ -18,7 +19,7 @@ export const ChangeQuantityOfBooks = () => {
 
     useEffect(() => {
         const fetchBooks = async () => {
-            const url = `http://localhost:6060/api/books?page=${currentPage - 1}&size=${booksPerPage}`;
+            const url = `${apiUrl}/books?page=${currentPage - 1}&size=${booksPerPage}`;
 
             const response = await fetch(url);
             if (!response.ok) {
@@ -47,7 +48,7 @@ export const ChangeQuantityOfBooks = () => {
             setIsLoading(false);
             setHttpError(error.message);
         })
-    }, [currentPage, bookDelete, booksPerPage]);
+    }, [apiUrl, currentPage, bookDelete, booksPerPage]);
 
     const indexOfLastBook = currentPage * booksPerPage;
     const indexOfFirstBook = indexOfLastBook - booksPerPage;

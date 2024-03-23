@@ -15,6 +15,12 @@ server:
     whitelabel:
       enabled: false
   port: ${PORT}
+  ssl:
+    enabled: true
+    key-alias: ${KEY_ALIAS}
+    key-store: ${KEY_STORE}
+    key-store-password: ${KEY_STORE_PASSWORD}
+    key-store-type: PKCS12
 
 spring:
   datasource:

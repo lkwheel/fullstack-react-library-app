@@ -5,13 +5,14 @@ import { ReturnBook } from './ReturnBook';
 import { useEffect, useState } from 'react';
 
 export const Carousel = () => {
+    const apiUrl = process.env.REACT_APP_API_URL;
     const [books, setBooks] = useState<BookModel[]>([]);
     const [isLoading, setIsLoading] = useState<boolean>(true);
     const [httpError, setHttpError] = useState(null);
 
     useEffect(() => {
         const fetchBooks = async () => {
-            const baseUrl = 'http://localhost:6060/api/books';
+            const baseUrl = `${apiUrl}/books`;
             const url = `${baseUrl}?page=0&size=9`;
             const response = await fetch(url);
             if (!response.ok) {
@@ -38,7 +39,7 @@ export const Carousel = () => {
             setIsLoading(false);
             setHttpError(error.message);
         })
-    }, []);
+    }, [apiUrl]);
 
     if (isLoading) {
         return (

@@ -7,6 +7,7 @@ import { LoansModal } from './LoansModal';
 
 export const Loans = () => {
 
+    const apiUrl = process.env.REACT_APP_API_URL;
     const { user, isAuthenticated, getAccessTokenSilently } = useAuth0();
 
     const [httpError, setHttpError] = useState(null);
@@ -21,7 +22,7 @@ export const Loans = () => {
         const fetchUserCurrentLoans = async () => {
             if (isAuthenticated && user?.email) {
                 const apiAccessToken = await getAccessTokenSilently();
-                const url = `http://localhost:6060/api/books/protected/current-loans`;
+                const url = `${apiUrl}/books/protected/current-loans`;
                 const requestOptions = {
                     method: 'GET',
                     headers: {
@@ -45,7 +46,7 @@ export const Loans = () => {
             setHttpError(error.message);
         });
         window.scrollTo(0, 0);
-    }, [getAccessTokenSilently, checkout, isAuthenticated, user]);
+    }, [apiUrl, getAccessTokenSilently, checkout, isAuthenticated, user]);
 
     if (isLoadingCurrentLoans) {
         return (
@@ -64,7 +65,7 @@ export const Loans = () => {
     async function returnBook(bookId: number) {
         if (isAuthenticated && user?.email) {
             const apiAccessToken = await getAccessTokenSilently();
-            const url = `http://localhost:6060/api/books/protected/return?bookId=${bookId}`;
+            const url = `${apiUrl}/books/protected/return?bookId=${bookId}`;
             const requestOptions = {
                 method: 'PUT',
                 headers: {
@@ -83,7 +84,7 @@ export const Loans = () => {
     async function renewLoan(bookId: number) {
         if (isAuthenticated && user?.email) {
             const apiAccessToken = await getAccessTokenSilently();
-            const url = `http://localhost:6060/api/books/protected/renew/loan?bookId=${bookId}`;
+            const url = `${apiUrl}/books/protected/renew/loan?bookId=${bookId}`;
             const requestOptions = {
                 method: 'PUT',
                 headers: {

@@ -6,6 +6,8 @@ import { useEffect, useState } from 'react';
 import { SpinnerLoading } from '../Utils/SpinnerLoading';
 
 export const Navbar = () => {
+
+    const apiUrl = process.env.REACT_APP_API_URL;
     const { user, isAuthenticated, getAccessTokenSilently } = useAuth0();
 
     const [isAdmin, setIsAdmin] = useState(false);
@@ -16,7 +18,7 @@ export const Navbar = () => {
             if (isAuthenticated && user?.email) {
                 try {
                     const apiAccessToken = await getAccessTokenSilently();
-                    const url = `http://localhost:6060/api/user/protected/permissions`;
+                    const url = `${apiUrl}/user/protected/permissions`;
                     const requestOptions = {
                         method: 'GET',
                         headers: {
@@ -41,7 +43,7 @@ export const Navbar = () => {
         };
 
         fetchCheckAdminUseRole();
-    }, [getAccessTokenSilently, isAuthenticated, user, isAdmin]);
+    }, [apiUrl, getAccessTokenSilently, isAuthenticated, user, isAdmin]);
 
     if (isLoading) {
         return (

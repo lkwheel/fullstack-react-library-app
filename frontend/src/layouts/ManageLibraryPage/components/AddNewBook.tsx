@@ -4,6 +4,7 @@ import AddBookRequest from '../../../model/AddBookRequest';
 
 export const AddNewBook = () => {
 
+    const apiUrl = process.env.REACT_APP_API_URL;
     const { user, isAuthenticated, getAccessTokenSilently } = useAuth0();
 
     // New Book
@@ -48,7 +49,7 @@ export const AddNewBook = () => {
             }
             try {
                 const apiAccessToken = await getAccessTokenSilently();
-                const url = `http://localhost:6060/api/admin/protected/add/book`;
+                const url = `${apiUrl}/admin/protected/add/book`;
                 const requestOptions = {
                     method: 'POST',
                     headers: {

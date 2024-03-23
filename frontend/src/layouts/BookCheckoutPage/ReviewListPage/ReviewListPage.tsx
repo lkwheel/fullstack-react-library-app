@@ -6,6 +6,7 @@ import { Pagination } from '../../Utils/Pagination';
 
 export const ReviewListPage = () => {
 
+    const apiUrl = process.env.REACT_APP_API_URL;
     const [reviews, setReviews] = useState<ReviewModel[]>([]);
     const [isLoading, setIsLoading] = useState<boolean>(true);
     const [httpError, setHttpError] = useState(null);
@@ -20,7 +21,7 @@ export const ReviewListPage = () => {
 
     useEffect(() => {
         const fetchBookReviews = async () => {
-            const reviewUrl = `http://localhost:6060/api/reviews/find-by-book-id?bookId=${bookId}&page=${currentPage - 1}&size=${reviewsPerPage};`;
+            const reviewUrl = `${apiUrl}/reviews/find-by-book-id?bookId=${bookId}&page=${currentPage - 1}&size=${reviewsPerPage};`;
             const responseReviews = await fetch(reviewUrl);
 
             if (!responseReviews.ok) {
@@ -53,7 +54,7 @@ export const ReviewListPage = () => {
             setIsLoading(false);
             setHttpError(error.message);
         })
-    }, [currentPage]);
+    }, [apiUrl, bookId, currentPage, reviewsPerPage]);
 
     if (isLoading) {
         return (

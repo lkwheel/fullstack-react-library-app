@@ -5,6 +5,8 @@ import { SpinnerLoading } from '../../Utils/SpinnerLoading';
 import { Pagination } from '../../Utils/Pagination';
 
 export const Messages = () => {
+
+    const apiUrl = process.env.REACT_APP_API_URL;
     const { user, isAuthenticated, getAccessTokenSilently } = useAuth0();
 
     const [isLoadingMessages, setIsLoadingMessages] = useState(true);
@@ -15,7 +17,7 @@ export const Messages = () => {
     const [messages, setMessages] = useState<MessageModel[]>([]);
 
     // Pagination
-    const [messagesPerPage, setMessagesPerPage] = useState(5);
+    const [messagesPerPage] = useState(5);
     const [currentPage, setCurrentPage] = useState(1);
     const [totalPages, setTotalPages] = useState(0);
 
@@ -23,7 +25,7 @@ export const Messages = () => {
         const fetchUserMessages = async () => {
             if (isAuthenticated && user?.email) {
                 const apiAccessToken = await getAccessTokenSilently();
-                const baseUrl = `http://localhost:6060/api/messages/protected/find-by-user-email`;
+                const baseUrl = `${apiUrl}/messages/protected/find-by-user-email`;
                 const url = `${baseUrl}?page=${currentPage - 1}&size=${messagesPerPage}`;
 
                 const requestOptions = {
@@ -49,7 +51,7 @@ export const Messages = () => {
             setHttpError(error.messages);
         });
         window.scrollTo(0, 0);
-    }, [getAccessTokenSilently, currentPage, isAuthenticated, messagesPerPage]);
+    }, [apiUrl, getAccessTokenSilently, currentPage, isAuthenticated, user, messagesPerPage]);
 
     if (isLoadingMessages) {
         return (

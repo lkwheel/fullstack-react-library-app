@@ -7,6 +7,8 @@ import { AddNewBook } from './components/AddNewBook';
 import { ChangeQuantityOfBooks } from './components/ChangeQuantityOfBooks';
 
 export const ManageLibraryPage = () => {
+
+    const apiUrl = process.env.REACT_APP_API_URL;
     const { user, isAuthenticated, getAccessTokenSilently } = useAuth0();
 
     const [changeQuantityOfBooksClick, setChangeQuantityOfBookClick] = useState(false);
@@ -21,7 +23,7 @@ export const ManageLibraryPage = () => {
             if (isAuthenticated && user?.email) {
                 try {
                     const apiAccessToken = await getAccessTokenSilently();
-                    const url = `http://localhost:6060/api/user/protected/permissions`;
+                    const url = `${apiUrl}/user/protected/permissions`;
                     const requestOptions = {
                         method: 'GET',
                         headers: {
@@ -47,7 +49,7 @@ export const ManageLibraryPage = () => {
         };
 
         fetchCheckAdminUseRole();
-    }, [getAccessTokenSilently, isAuthenticated, user, isAdmin]);
+    }, [apiUrl, getAccessTokenSilently, isAuthenticated, user, isAdmin]);
 
 
     function addBookClickFunction() {

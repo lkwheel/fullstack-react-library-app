@@ -3,6 +3,8 @@ import BookModel from '../../../model/BookModel';
 import { useAuth0 } from '@auth0/auth0-react';
 
 export const ChangeQuantityOfBook: React.FC<{ book: BookModel, deleteBook: any }> = (props, key) => {
+
+    const apiUrl = process.env.REACT_APP_API_URL;
     const { user, isAuthenticated, getAccessTokenSilently } = useAuth0();
 
     const [quantity, setQuantity] = useState<number>(0);
@@ -19,7 +21,7 @@ export const ChangeQuantityOfBook: React.FC<{ book: BookModel, deleteBook: any }
     async function increaseQuantity() {
         if (isAuthenticated && user?.email) {
             const apiAccessToken = await getAccessTokenSilently();
-            const url = `http://localhost:6060/api/admin/protected/increase/book/quantity?bookId=${props.book?.id}`;
+            const url = `${apiUrl}/admin/protected/increase/book/quantity?bookId=${props.book?.id}`;
 
             const requestOptions = {
                 method: 'PUT',
@@ -41,7 +43,7 @@ export const ChangeQuantityOfBook: React.FC<{ book: BookModel, deleteBook: any }
     async function decreaseQuantity() {
         if (isAuthenticated && user?.email) {
             const apiAccessToken = await getAccessTokenSilently();
-            const url = `http://localhost:6060/api/admin/protected/decrease/book/quantity?bookId=${props.book?.id}`;
+            const url = `${apiUrl}/admin/protected/decrease/book/quantity?bookId=${props.book?.id}`;
 
             const requestOptions = {
                 method: 'PUT',
@@ -63,7 +65,7 @@ export const ChangeQuantityOfBook: React.FC<{ book: BookModel, deleteBook: any }
     async function deleteBook() {
         if (isAuthenticated && user?.email) {
             const apiAccessToken = await getAccessTokenSilently();
-            const url = `http://localhost:6060/api/admin/protected/delete/book?bookId=${props.book?.id}`;
+            const url = `${apiUrl}/admin/protected/delete/book?bookId=${props.book?.id}`;
 
             const requestOptions = {
                 method: 'DELETE',

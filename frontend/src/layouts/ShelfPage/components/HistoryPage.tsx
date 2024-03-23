@@ -7,6 +7,7 @@ import { Pagination } from '../../Utils/Pagination';
 
 export const HistoryPage = () => {
 
+    const apiUrl = process.env.REACT_APP_API_URL;
     const { user, isAuthenticated, getAccessTokenSilently } = useAuth0();
     const [isLoadingHistory, setIsLoadingHistory] = useState(true);
 
@@ -23,7 +24,7 @@ export const HistoryPage = () => {
         const fetchUserHistory = async () => {
             if (isAuthenticated && user?.email) {
                 const apiAccessToken = await getAccessTokenSilently();
-                const baseUrl = `http://localhost:6060/api/histories/protected/find-by-user-email`;
+                const baseUrl = `${apiUrl}/histories/protected/find-by-user-email`;
                 const url = `${baseUrl}?page=${currentPage - 1}&size=5`;
 
                 const requestOptions = {
@@ -49,7 +50,7 @@ export const HistoryPage = () => {
             setIsLoadingHistory(false);
             setHttpError(error.message);
         });
-    }, [getAccessTokenSilently, currentPage, isAuthenticated, user]);
+    }, [apiUrl, getAccessTokenSilently, currentPage, isAuthenticated, user]);
 
     if (isLoadingHistory) {
         return (

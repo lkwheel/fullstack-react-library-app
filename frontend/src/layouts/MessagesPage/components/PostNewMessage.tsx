@@ -4,6 +4,7 @@ import MessageModel from '../../../model/MessageModel';
 
 export const PostNewMessage = () => {
 
+    const apiUrl = process.env.REACT_APP_API_URL;
     const { user, isAuthenticated, getAccessTokenSilently } = useAuth0();
     const [title, setTitle] = useState('');
     const [question, setQuestion] = useState('');
@@ -13,7 +14,7 @@ export const PostNewMessage = () => {
     async function submitNewQuestion() {
         if (isAuthenticated && user?.email && title !== '' && question !== '') {
             const apiAccessToken = await getAccessTokenSilently();
-            const url = `http://localhost:6060/api/messages/protected/add`;
+            const url = `${apiUrl}/messages/protected/add`;
             const messageRequestModel: MessageModel = new MessageModel(title, question);
             const requestOptions = {
                 method: 'POST',

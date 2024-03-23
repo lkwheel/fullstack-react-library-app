@@ -6,6 +6,7 @@ import { Pagination } from '../Utils/Pagination';
 
 export const SearchBooksPage = () => {
 
+    const apiUrl = process.env.REACT_APP_API_URL;
     const [books, setBooks] = useState<BookModel[]>([]);
     const [isLoading, setIsLoading] = useState<boolean>(true);
     const [httpError, setHttpError] = useState(null);
@@ -19,7 +20,7 @@ export const SearchBooksPage = () => {
 
     useEffect(() => {
         const fetchBooks = async () => {
-            const baseUrl = 'http://localhost:6060/api/books';
+            const baseUrl = `${apiUrl}/books`;
             let url = '';
             if (searchUrl === '') {
                 url = `${baseUrl}?page=${currentPage - 1}&size=${booksPerPage}`;
@@ -55,7 +56,7 @@ export const SearchBooksPage = () => {
             setHttpError(error.message);
         })
         window.scrollTo(0, 0);
-    }, [booksPerPage, currentPage, searchUrl]);
+    }, [apiUrl, booksPerPage, currentPage, searchUrl]);
 
     if (isLoading) {
         return (
