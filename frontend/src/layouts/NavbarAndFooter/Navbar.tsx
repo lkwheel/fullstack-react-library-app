@@ -27,11 +27,15 @@ export const Navbar = () => {
                         }
                     };
                     const response = await fetch(url, requestOptions);
-                    if (!response.ok) {
+                    if (!response.ok && response.status === 403) {
+                        setIsAdmin(false);
+                        setIsLoading(false);
+                    } else if (!response.ok) {
                         throw new Error('Something went wrong getting user permissions');
+                    } else {
+                        setIsAdmin(true);
+                        setIsLoading(false);
                     }
-                    setIsAdmin(true);
-                    setIsLoading(false);
                 } catch (error: any) {
                     setIsAdmin(false);
                     setIsLoading(false);

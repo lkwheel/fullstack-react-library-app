@@ -1,12 +1,17 @@
-import { useEffect, useState } from 'react';
 import { useAuth0 } from '@auth0/auth0-react';
+import { useEffect, useRef, useState } from 'react';
+import { useParams } from 'react-router-dom';
 import BookModel from '../../models/BookModel';
+import ReviewModel from '../../models/ReviewModel';
+import ReviewRequestModel from '../../models/ReviewRequestModel';
 import { SpinnerLoading } from '../Utils/SpinnerLoading';
 import { StarsReview } from '../Utils/StarsReview';
 import { CheckAndReviewBox } from './CheckAndReviewBox';
-import ReviewModel from '../../models/ReviewModel';
 import { LatestReviews } from './LatestReviews';
-import ReviewRequestModel from '../../models/ReviewRequestModel';
+
+interface Params {
+    bookId: string;
+}
 
 export const BookCheckoutPage = () => {
     const apiUrl = process.env.REACT_APP_API_URL;
@@ -30,9 +35,13 @@ export const BookCheckoutPage = () => {
     const [isCheckedOut, setIsCheckedOut] = useState(false);
     const [isLoadingBookCheckedOut, setIsLoadingBookCheckedOut] = useState(true);
 
+    const [displayError, setDisplayError] = useState(false);
+
     const { user, isAuthenticated, getAccessTokenSilently } = useAuth0();
 
-    const bookId = (window.location.pathname).split('/')[2];
+    // Handle bookIds
+    const { bookId } = useParams<Params>();
+    const prevBookIdRef = useRef<string | null>(null);
 
     useEffect(() => {
         const fetchBook = async () => {
@@ -72,6 +81,11 @@ export const BookCheckoutPage = () => {
 
     useEffect(() => {
         const fetchBookReviews = async () => {
+            if (prevBookIdRef.current === bookId) {
+                return; // Skip fetching if bookId hasn't changed
+            }
+
+            prevBookIdRef.current = bookId; // Update previous bookId
             const reviewUrl = `${apiUrl}/reviews/find-by-book-id?bookId=${bookId}`;
             const responseReviews = await fetch(reviewUrl);
 
@@ -186,8 +200,11 @@ export const BookCheckoutPage = () => {
                 };
                 const bookCheckedOutResponse = await fetch(url, requestOptions);
                 if (!bookCheckedOutResponse.ok) {
-                    throw new Error('Something went wrong getting book checked out');
+                    setDisplayError(true);
+                    throw new Error('Something went wrong checking out book');
                 }
+
+                setDisplayError(false)
 
                 const bookCheckedOutResponseJson = await bookCheckedOutResponse.json();
                 setIsCheckedOut(bookCheckedOutResponseJson);
@@ -199,7 +216,7 @@ export const BookCheckoutPage = () => {
             setIsLoadingBookCheckedOut(false);
             setHttpError(error.message);
         });
-    }, [apiUrl, bookId, getAccessTokenSilently, isAuthenticated, user]);
+    }, [apiUrl, bookId, displayError, getAccessTokenSilently, isAuthenticated, user]);
 
     if (isLoading ||
         isLoadingReview ||
@@ -265,6 +282,10 @@ export const BookCheckoutPage = () => {
     return (
         <div>
             <div className='container mb-5 d-none d-lg-block'>
+                {displayError && <div className='alert alert-danger mt-3' role='alert'>
+                    Please pay outstanding fees and/or return late book(s).
+                </div>
+                }
                 <div className='row mt-5'>
                     <div className='col-sm-2 col-md-2'>
                         {book?.img ?
