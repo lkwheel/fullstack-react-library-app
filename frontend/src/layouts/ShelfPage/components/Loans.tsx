@@ -135,7 +135,7 @@ export const Loans = () => {
                                                 }
                                                 {shelfCurrentLoan.daysLeft < 0 &&
                                                     <p className='text-danger'>
-                                                        Past due by: {shelfCurrentLoan.daysLeft} days.
+                                                        Past due by: {Math.abs(shelfCurrentLoan.daysLeft)} days.
                                                     </p>
                                                 }
                                                 <div className='list-group mt-3'>

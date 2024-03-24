@@ -200,11 +200,8 @@ export const BookCheckoutPage = () => {
                 };
                 const bookCheckedOutResponse = await fetch(url, requestOptions);
                 if (!bookCheckedOutResponse.ok) {
-                    setDisplayError(true);
                     throw new Error('Something went wrong checking out book');
                 }
-
-                setDisplayError(false)
 
                 const bookCheckedOutResponseJson = await bookCheckedOutResponse.json();
                 setIsCheckedOut(bookCheckedOutResponseJson);
@@ -249,9 +246,11 @@ export const BookCheckoutPage = () => {
 
         const checkoutResponse = await fetch(url, requestOptions);
         if (!checkoutResponse.ok) {
-            throw new Error('Something went wrong - checkout book');
+            setDisplayError(true);
+        } else {
+            setDisplayError(false)
+            setIsCheckedOut(true);
         }
-        setIsCheckedOut(true);
     }
 
     async function submitReview(starInput: number, reviewDescription: string) {
@@ -317,6 +316,10 @@ export const BookCheckoutPage = () => {
                 <LatestReviews reviews={reviews} bookId={book?.id} mobile={false} />
             </div>
             <div className='container d-lg-none mt-5 mb-5'>
+                {displayError && <div className='alert alert-danger mt-3' role='alert'>
+                    Please pay outstanding fees and/or return late book(s).
+                </div>
+                }
                 <div className='d-flex justify-content-center align-items-center'>
                     {book?.img ?
                         <img src={book?.img} width='226' height='349' alt='Book' />

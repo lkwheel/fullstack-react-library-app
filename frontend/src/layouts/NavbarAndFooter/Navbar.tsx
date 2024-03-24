@@ -80,6 +80,11 @@ export const Navbar = () => {
                                 <NavLink className='nav-link' to='/shelf'>Shelf</NavLink>
                             </li>
                         )}
+                        {isAuthenticated && user && (
+                            <li className='nav-item'>
+                                <NavLink className='nav-link' to='/fees'>Pay Fees</NavLink>
+                            </li>
+                        )}
                         {isAuthenticated && isAdmin && (
                             <li className='nav-item'>
                                 <NavLink className='nav-link' to='/admin'>Admin</NavLink>

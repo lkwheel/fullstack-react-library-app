@@ -32,7 +32,7 @@ public class BookController {
     }
 
     @GetMapping("/protected/current-loans")
-    public ResponseEntity<List<ShelfCurrentLoansResponse>> getCurrentLoans() throws Exception {
+    public ResponseEntity<List<ShelfCurrentLoansResponse>> getCurrentLoans() {
         ResponseEntity<?> userDataResponse = userDataService.getUserData();
         if (!userDataResponse.getStatusCode().is2xxSuccessful()) {
             log.warn("Problem getting user data");

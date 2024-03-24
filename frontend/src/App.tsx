@@ -11,6 +11,7 @@ import { SearchBooksPage } from './layouts/SearchBooksPage/SearchBooksPage';
 import { ShelfPage } from './layouts/ShelfPage/ShelfPage';
 import { MessagesPage } from './layouts/MessagesPage/MessagesPage';
 import { ManageLibraryPage } from './layouts/ManageLibraryPage/ManageLibraryPage';
+import { PaymentPage } from './layouts/PaymentPage/PaymentPage';
 
 export const App = () => {
   return (
@@ -45,6 +46,7 @@ export const App = () => {
           <ProtectedRoute path='/shelf' component={ShelfPage} />
           <ProtectedRoute path='/messages' component={MessagesPage} />
           <ProtectedRoute path='/admin' component={ManageLibraryPage} />
+          <ProtectedRoute path='/fees' component={PaymentPage} />
 
         </Switch>
       </div>

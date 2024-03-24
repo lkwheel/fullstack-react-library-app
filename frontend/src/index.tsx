@@ -15,10 +15,10 @@ const root = ReactDOM.createRoot(
 root.render(
 
   <BrowserRouter>
-    <Elements stripe={stripePromise}>
-      <Auth0ProviderWithHistory>
+    <Auth0ProviderWithHistory>
+      <Elements stripe={stripePromise}>
         <App />
-      </Auth0ProviderWithHistory>
-    </Elements>
+      </Elements>
+    </Auth0ProviderWithHistory>
   </BrowserRouter>
 );

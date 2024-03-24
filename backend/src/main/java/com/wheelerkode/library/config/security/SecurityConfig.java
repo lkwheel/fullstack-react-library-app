@@ -27,7 +27,8 @@ public class SecurityConfig {
                     "/api/messages/protected/**",
                     "/api/user/protected/**",
                     "/api/admin/protected/**",
-                    "/api/admin/protected/delete/book"
+                    "/api/admin/protected/delete/book",
+                    "/api/payment/protected/**"
                 ).authenticated().anyRequest().permitAll())
                 .cors(corsConfigurer -> corsConfigurer.configurationSource(corsConfiguration()))
                 .oauth2ResourceServer(oauth2 -> oauth2.jwt(Customizer.withDefaults())

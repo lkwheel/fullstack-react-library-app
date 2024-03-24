@@ -8,6 +8,6 @@ import java.util.UUID;
 
 public interface PaymentRepository extends JpaRepository<Payment, UUID> {
 
-    Optional<Payment> findBooksByUserEmail(String userEmail);
+    Optional<Payment> findPaymentByUserEmail(String userEmail);
 
 }

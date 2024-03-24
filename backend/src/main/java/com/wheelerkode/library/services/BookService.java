@@ -61,7 +61,7 @@ public class BookService {
             }
         }
 
-        Optional<Payment> userPayment = paymentRepository.findBooksByUserEmail(userEmail);
+        Optional<Payment> userPayment = paymentRepository.findPaymentByUserEmail(userEmail);
         if ((userPayment.isPresent() && userPayment.get()
                                                    .getAmount() > 0) || (userPayment.isPresent() && booksNeededReturn)) {
             throw new OutstandingFeesException("Outstanding fees");
@@ -166,12 +166,12 @@ public class BookService {
         try {
             Date d1 = sdf.parse(validateCheckout.getReturnDate());
             Date d2 = sdf.parse(LocalDate.now().toString());
-            TimeUnit time = TimeUnit.HOURS;
+            TimeUnit time = TimeUnit.DAYS;
 
             long differenceInTime = time.convert(d1.getTime() - d2.getTime(), TimeUnit.MILLISECONDS);
 
             if (differenceInTime < 0) {
-                Optional<Payment> foundPayment = paymentRepository.findBooksByUserEmail(userEmail);
+                Optional<Payment> foundPayment = paymentRepository.findPaymentByUserEmail(userEmail);
                 Payment payment;
                 payment = foundPayment.orElseGet(Payment::new);
                 payment.setAmount(payment.getAmount() + (differenceInTime * (LATE_FEE * -1)));

@@ -38,7 +38,7 @@ public class PaymentService {
     }
 
     public ResponseEntity<String> stripePayment(String userEmail) throws Exception {
-        Optional<Payment> payment = paymentRepository.findBooksByUserEmail(userEmail);
+        Optional<Payment> payment = paymentRepository.findPaymentByUserEmail(userEmail);
         if (payment.isEmpty()) {
             throw new NotFoundException("payment not found");
         }
@@ -46,5 +46,9 @@ public class PaymentService {
         payment.get().setAmount(00.00);
         paymentRepository.save(payment.get());
         return ResponseEntity.ok().build();
+    }
+
+    public Optional<Payment> getPaymentByUserEmail(String userEmail) {
+        return paymentRepository.findPaymentByUserEmail(userEmail);
     }
 }
